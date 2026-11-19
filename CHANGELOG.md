@@ -5,6 +5,31 @@ Todas as mudanças notáveis do projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [0.2.0] - 2026-11-19
+
+### Adicionado (Milestone 2 — Domínio público)
+
+- **Modelos de dados**:
+  - `apps.core.SiteConfig`: singleton com metadados do blog, biografia e redes sociais em PT e EN.
+  - `apps.blog.Tag`: classificação de artigos com slug único.
+  - `apps.blog.Post`: artigos em Markdown, sanitização com `nh3`, syntax highlight com Pygments, slug único por idioma, restrições para tradução entre idiomas e cálculo automático de tempo de leitura.
+  - `apps.blog.MediaAsset`: arquivos de mídia com `alt_text` obrigatório para acessibilidade.
+- **Páginas e funcionalidades públicas**:
+  - Home: listagem paginada (10 por página) de posts publicados no idioma ativo.
+  - Detalhe do artigo: HTML renderizado seguro, capa, metatags SEO (Open Graph, Twitter Card, JSON-LD Article) e aviso/link de tradução.
+  - Listagem por Tag e Busca (`q` em título e conteúdo Markdown).
+  - Página Sobre: biografia e links do autor vindos do `SiteConfig`.
+  - Feed RSS (`/feed/` e `/en/feed/`) com `django.contrib.syndication`.
+  - Sitemap XML (`/sitemap.xml`) e `robots.txt` apontando para o sitemap e bloqueando o caminho da gestão.
+  - Páginas de erro customizadas (404 e 500).
+- **Interface e Acessibilidade**:
+  - Base em Bootstrap 5.3 com alternador de tema claro/escuro persistente via `localStorage` e suporte inicial a `prefers-color-scheme`.
+  - Skip link para o conteúdo principal, tags semânticas e contraste adequado.
+  - Seletor de idioma PT-BR / EN com templatetag `change_lang` mantendo a página equivalente.
+  - Traduções compiladas em `.mo` para inglês e português.
+- **Testes e Qualidade**:
+  - Cobertura de testes de 98.84% com 36 testes passando (modelos, views, sitemaps, RSS, SEO, i18n).
+
 ## [0.1.0] - 2026-11-19
 
 ### Adicionado (Milestone 1 — Fundação)
