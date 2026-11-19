@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Sobre" %} | {{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card bg-body-tertiary border-0 shadow-sm p-4 p-md-5">
+      <div class="card-body">
+        <h1 class="display-5 fw-bold mb-3">{% trans "Sobre o Autor" %}</h1>
+        <h2 class="h5 text-primary mb-4">{{ tagline }}</h2>
+
+        <div class="lead text-secondary mb-5" style="white-space: pre-line; line-height: 1.8;">
+          {{ about_content|default:"Informações sobre o autor em breve." }}
+        </div>
+
+        <hr class="my-4">
+
+        <h3 class="h5 fw-bold mb-3">{% trans "Conecte-se comigo" %}</h3>
+        <div class="d-flex flex-wrap gap-3">
+          {% if site_config.github_url %}
+            <a href="{{ site_config.github_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary">
+              <i class="bi bi-github"></i> GitHub
+            </a>
+          {% endif %}
+          {% if site_config.linkedin_url %}
+            <a href="{{ site_config.linkedin_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary">
+              <i class="bi bi-linkedin"></i> LinkedIn
+            </a>
+          {% endif %}
+          {% if site_config.portfolio_url %}
+            <a href="{{ site_config.portfolio_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary">
+              <i class="bi bi-globe"></i> Portfolio
+            </a>
+          {% endif %}
+          {% if site_config.email %}
+            <a href="mailto:{{ site_config.email }}" class="btn btn-outline-secondary">
+              <i class="bi bi-envelope"></i> E-mail
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
