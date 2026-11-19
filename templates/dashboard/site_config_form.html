@@ -1,0 +1,97 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}Configurações do Site{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 fw-bold mb-0">Configurações do Site</h1>
+</div>
+
+<div class="card border-0 shadow-sm p-4">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <ul class="nav nav-tabs mb-4" id="configTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pt-tab" data-bs-toggle="tab" data-bs-target="#pt-pane" type="button" role="tab">
+          🇧🇷 Português
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="en-tab" data-bs-toggle="tab" data-bs-target="#en-pane" type="button" role="tab">
+          🇺🇸 English
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="social-tab" data-bs-toggle="tab" data-bs-target="#social-pane" type="button" role="tab">
+          🌐 Redes & Contato
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="configTabsContent">
+      <!-- Tab PT -->
+      <div class="tab-pane fade show active" id="pt-pane" role="tabpanel">
+        <div class="mb-3">
+          <label for="{{ form.site_title_pt.id_for_label }}" class="form-label fw-semibold">Título do Site (PT) *</label>
+          {{ form.site_title_pt }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.tagline_pt.id_for_label }}" class="form-label fw-semibold">Subtítulo / Tagline (PT)</label>
+          {{ form.tagline_pt }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.about_pt.id_for_label }}" class="form-label fw-semibold">Texto Sobre o Autor (PT)</label>
+          {{ form.about_pt }}
+        </div>
+      </div>
+
+      <!-- Tab EN -->
+      <div class="tab-pane fade" id="en-pane" role="tabpanel">
+        <div class="mb-3">
+          <label for="{{ form.site_title_en.id_for_label }}" class="form-label fw-semibold">Site Title (EN) *</label>
+          {{ form.site_title_en }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.tagline_en.id_for_label }}" class="form-label fw-semibold">Subtítulo / Tagline (EN)</label>
+          {{ form.tagline_en }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.about_en.id_for_label }}" class="form-label fw-semibold">About the Author (EN)</label>
+          {{ form.about_en }}
+        </div>
+      </div>
+
+      <!-- Tab Social & Media -->
+      <div class="tab-pane fade" id="social-pane" role="tabpanel">
+        <div class="mb-3">
+          <label for="{{ form.email.id_for_label }}" class="form-label fw-semibold">E-mail de Contato</label>
+          {{ form.email }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.github_url.id_for_label }}" class="form-label fw-semibold">GitHub URL</label>
+          {{ form.github_url }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.linkedin_url.id_for_label }}" class="form-label fw-semibold">LinkedIn URL</label>
+          {{ form.linkedin_url }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.portfolio_url.id_for_label }}" class="form-label fw-semibold">Portfolio URL</label>
+          {{ form.portfolio_url }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.default_og_image.id_for_label }}" class="form-label fw-semibold">Imagem OpenGraph Padrão</label>
+          {{ form.default_og_image }}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 pt-3 border-top d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary px-4 fw-semibold">
+        <i class="bi bi-save"></i> Salvar Configurações
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

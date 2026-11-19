@@ -1,0 +1,88 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}Biblioteca de Mídia{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 fw-bold mb-0">Biblioteca de Mídia</h1>
+</div>
+
+<!-- Upload Box -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body p-4">
+    <h2 class="h5 fw-bold mb-3"><i class="bi bi-cloud-arrow-up"></i> Enviar Novo Arquivo de Mídia</h2>
+    <form method="post" action="{% url 'dashboard:media_upload' %}" enctype="multipart/form-data" class="row g-3 align-items-end">
+      {% csrf_token %}
+      <div class="col-md-5">
+        <label for="{{ upload_form.file.id_for_label }}" class="form-label small fw-semibold">Arquivo *</label>
+        {{ upload_form.file }}
+      </div>
+      <div class="col-md-5">
+        <label for="{{ upload_form.alt_text.id_for_label }}" class="form-label small fw-semibold">Texto Alternativo (Alt Text - Acessibilidade) *</label>
+        {{ upload_form.alt_text }}
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-upload"></i> Enviar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Media Assets Grid -->
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-4">
+    {% if media_assets %}
+      <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
+        {% for asset in media_assets %}
+          <div class="col">
+            <div class="card h-100 border shadow-sm">
+              <div style="height: 120px; overflow: hidden; background: #f8f9fa;" class="d-flex align-items-center justify-content-center">
+                <img src="{{ asset.file.url }}" alt="{{ asset.alt_text }}" class="w-100 h-100 object-fit-cover" loading="lazy">
+              </div>
+              <div class="card-body p-2 d-flex flex-column justify-content-between">
+                <div class="small text-truncate fw-semibold mb-1" title="{{ asset.alt_text }}">
+                  {{ asset.alt_text }}
+                </div>
+                <div class="d-flex justify-content-between align-items-center gap-1 mt-2">
+                  <button type="button" class="btn btn-outline-secondary btn-sm flex-grow-1 copy-btn" data-url="{{ asset.file.url }}" data-alt="{{ asset.alt_text }}" title="Copiar código Markdown">
+                    <i class="bi bi-copy"></i>
+                  </button>
+                  <a href="{% url 'dashboard:media_delete' asset.pk %}" class="btn btn-outline-danger btn-sm" title="Excluir">
+                    <i class="bi bi-trash"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-5 text-muted">
+        <i class="bi bi-images fs-1 d-block mb-2"></i>
+        Nenhuma mídia enviada ainda. Faça o upload acima para usar imagens em seus artigos!
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Copy markdown syntax to clipboard
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const url = this.getAttribute('data-url');
+      const alt = this.getAttribute('data-alt');
+      const markdownCode = `![${alt}](${url})`;
+
+      navigator.clipboard.writeText(markdownCode).then(() => {
+        const originalHTML = this.innerHTML;
+        this.innerHTML = '<i class="bi bi-check2 text-success"></i>';
+        setTimeout(() => { this.innerHTML = originalHTML; }, 2000);
+      });
+    });
+  });
+</script>
+{% endblock %}

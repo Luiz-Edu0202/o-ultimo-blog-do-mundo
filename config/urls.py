@@ -1,5 +1,6 @@
 """URL configuration for O Último Blog do Mundo."""
 
+from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
 from django.http import HttpResponse
@@ -20,8 +21,11 @@ def healthcheck(request):
     return HttpResponse("ok", content_type="text/plain")
 
 
+admin_path = getattr(settings, "ADMIN_PATH", "gestao").strip("/")
+
 # URLs that should NOT have language prefixes
 urlpatterns = [
+    path(f"{admin_path}/", include("apps.dashboard.urls", namespace="dashboard")),
     path("healthz", healthcheck, name="healthcheck"),
     path("robots.txt", robots_txt, name="robots_txt"),
     path(
