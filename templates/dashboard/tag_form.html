@@ -1,0 +1,36 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}{% if object %}Editar Tag{% else %}Nova Tag{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card border-0 shadow-sm p-4">
+      <h1 class="h4 fw-bold mb-4">
+        {% if object %}Editar Tag: #{{ object.name }}{% else %}Criar Nova Tag{% endif %}
+      </h1>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">Nome da Tag *</label>
+          {{ form.name }}
+          {% if form.name.errors %}<div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="mb-4">
+          <label for="{{ form.slug.id_for_label }}" class="form-label fw-bold">Slug (opcional)</label>
+          {{ form.slug }}
+          <div class="form-text small">Se deixado em branco, será gerado automaticamente a partir do nome.</div>
+          {% if form.slug.errors %}<div class="text-danger small mt-1">{{ form.slug.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <a href="{% url 'dashboard:tag_list' %}" class="btn btn-outline-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Salvar Tag</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

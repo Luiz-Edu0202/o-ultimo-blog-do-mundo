@@ -1,0 +1,162 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+  {% if object %}Editar Artigo: {{ object.title }}{% else %}Novo Artigo{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 fw-bold mb-0">
+    {% if object %}Editar Artigo{% else %}Novo Artigo{% endif %}
+  </h1>
+  <a href="{% url 'dashboard:index' %}" class="btn btn-outline-secondary">
+    &larr; Voltar
+  </a>
+</div>
+
+<form method="post" enctype="multipart/form-data" id="postForm">
+  {% csrf_token %}
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+      {% for error in form.non_field_errors %}{{ error }}<br>{% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="row g-4">
+    <!-- Main editor column -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm p-4 mb-4">
+        <div class="mb-3">
+          <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">Título *</label>
+          {{ form.title }}
+          {% if form.title.errors %}<div class="text-danger small mt-1">{{ form.title.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.slug.id_for_label }}" class="form-label fw-bold">Slug (URL amigável)</label>
+          {{ form.slug }}
+          <div class="form-text small">Se deixado em branco, será gerado automaticamente a partir do título.</div>
+          {% if form.slug.errors %}<div class="text-danger small mt-1">{{ form.slug.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.summary.id_for_label }}" class="form-label fw-bold">Resumo / Lead</label>
+          {{ form.summary }}
+          {% if form.summary.errors %}<div class="text-danger small mt-1">{{ form.summary.errors.0 }}</div>{% endif %}
+        </div>
+
+        <!-- Markdown Editor with Live Preview Tabs -->
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="form-label fw-bold mb-0">Conteúdo do Artigo (Markdown) *</label>
+            <ul class="nav nav-pills nav-fill small" id="editorTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active py-1 px-3" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit-pane" type="button" role="tab">
+                  <i class="bi bi-code-slash"></i> Escrever
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link py-1 px-3" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview-pane" type="button" role="tab">
+                  <i class="bi bi-eye"></i> Visualizar (Preview)
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="tab-content border rounded">
+            <div class="tab-pane fade show active p-2" id="edit-pane" role="tabpanel">
+              {{ form.content_md }}
+            </div>
+            <div class="tab-pane fade p-4 bg-body" id="preview-pane" role="tabpanel" style="min-height: 400px; max-height: 600px; overflow-y: auto;">
+              <div id="preview-content" class="post-content text-muted">
+                Carregando pré-visualização...
+              </div>
+            </div>
+          </div>
+          {% if form.content_md.errors %}<div class="text-danger small mt-1">{{ form.content_md.errors.0 }}</div>{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar options column -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm p-3 mb-4">
+        <h2 class="h5 fw-bold mb-3 border-bottom pb-2">Publicação</h2>
+
+        <div class="mb-3">
+          <label for="{{ form.status.id_for_label }}" class="form-label fw-semibold">Status</label>
+          {{ form.status }}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.language.id_for_label }}" class="form-label fw-semibold">Idioma do Artigo</label>
+          {{ form.language }}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.translation_of.id_for_label }}" class="form-label fw-semibold">Tradução de (Opcional)</label>
+          {{ form.translation_of }}
+          <div class="form-text small">Deve apontar para um artigo em idioma diferente.</div>
+          {% if form.translation_of.errors %}<div class="text-danger small mt-1">{{ form.translation_of.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.tags.id_for_label }}" class="form-label fw-semibold">Tags</label>
+          {{ form.tags }}
+          <div class="form-text small">Segure Ctrl (ou Cmd) para selecionar múltiplas tags.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.cover_image.id_for_label }}" class="form-label fw-semibold">Imagem de Capa</label>
+          {{ form.cover_image }}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.meta_description.id_for_label }}" class="form-label fw-semibold">Meta Description (SEO)</label>
+          {{ form.meta_description }}
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-primary py-2 fw-semibold">
+            <i class="bi bi-cloud-arrow-up"></i> Salvar Artigo
+          </button>
+          <a href="{% url 'dashboard:index' %}" class="btn btn-outline-secondary">
+            Cancelar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Live Markdown Preview tab handler
+  const previewTab = document.getElementById('preview-tab');
+  const previewContent = document.getElementById('preview-content');
+  const contentMdTextarea = document.getElementById('content_md_editor');
+
+  previewTab.addEventListener('shown.bs.tab', function () {
+    const markdownText = contentMdTextarea.value;
+    previewContent.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+    fetch("{% url 'dashboard:post_preview' %}", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+      },
+      body: new URLSearchParams({ 'content_md': markdownText })
+    })
+    .then(response => response.json())
+    .then(data => {
+      previewContent.innerHTML = data.html || '<em>(Conteúdo vazio)</em>';
+    })
+    .catch(() => {
+      previewContent.innerHTML = '<div class="alert alert-danger">Erro ao carregar pré-visualização.</div>';
+    });
+  });
+</script>
+{% endblock %}

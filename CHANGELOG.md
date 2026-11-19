@@ -5,6 +5,29 @@ Todas as mudanças notáveis do projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [0.3.0] - 2026-11-19
+
+### Adicionado (Milestone 3 — Dashboard administrativo)
+
+- **Segurança e Autenticação (fora do Django admin)**:
+  - Painel administrativo montado exclusivamente em URL secreta `/{ADMIN_PATH}/` (configurável por env, padrão dev `/gestao/`), sem nenhuma rota do Django admin exposta.
+  - Login customizado exclusivo para usuários com permissão de staff, com proteção contra força bruta e bloqueio temporário via `django-axes`.
+  - Autenticação em dois fatores (2FA TOTP) obrigatória via `django-otp`, com geração de QR Code em SVG e exibição de chave manual para apps autenticadores.
+  - Decorator e Mixin de autorização garantindo que todas as rotas da gestão exijam login e sessão 2FA ativa.
+  - Template de lockout customizado para bloqueios de taxa de requisições (`429 Too Many Requests`).
+  - Formulário autenticado de alteração de senha e fluxo seguro de encerramento de sessão (logout).
+  - Argon2 configurado como hasher primário de senhas.
+- **Painel de Gestão e CRUDs**:
+  - Dashboard principal com métricas em tempo real (total de artigos, publicados, rascunhos, tags e mídias) e tabela de artigos recentes com filtros por status, idioma e busca textual.
+  - Editor de artigos completo com abas de edição e pré-visualização em tempo real (Live Markdown Preview) via endpoint de API sanitizado.
+  - Ação rápida para alternar artigos entre rascunho e publicado diretamente na listagem.
+  - CRUD completo de Tags (criar, listar com contagem de artigos, editar e excluir).
+  - Biblioteca de Mídia (Media Library) com upload, validação de `alt_text` para acessibilidade, cópia de código Markdown para a área de transferência e exclusão.
+  - Editor das configurações gerais do site (`SiteConfig`) com abas para campos em Português e Inglês, redes sociais e imagem OpenGraph.
+- **Testes e Qualidade**:
+  - 59 testes automatizados cobrindo controle de acesso, obrigatoriedade de 2FA, bloqueio do axes, CRUDs de posts/tags/mídia/config e troca de senha.
+  - Cobertura de código atingida: 92.14% (mínimo exigido: 80%).
+
 ## [0.2.0] - 2026-11-19
 
 ### Adicionado (Milestone 2 — Domínio público)

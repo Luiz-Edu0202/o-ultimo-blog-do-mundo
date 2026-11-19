@@ -54,6 +54,9 @@ THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "django_bootstrap5",
+    "axes",
+    "django_otp",
+    "django_otp.plugins.otp_totp",
 ]
 
 LOCAL_APPS = [
@@ -81,8 +84,26 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django_otp.middleware.OTPMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "axes.middleware.AxesMiddleware",
+]
+
+# ---------------------------------------------------------------------------
+# Authentication & Passwords
+# ---------------------------------------------------------------------------
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
 ]
 
 # ---------------------------------------------------------------------------
@@ -172,6 +193,19 @@ REFERRER_POLICY = "strict-origin-when-cross-origin"
 SESSION_COOKIE_AGE = 28800  # 8 hours
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
+
+# ---------------------------------------------------------------------------
+# Axes (Rate limiting & Brute force protection)
+# ---------------------------------------------------------------------------
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1  # 1 hour
+AXES_RESET_ON_SUCCESS = True
+AXES_LOCKOUT_TEMPLATE = "dashboard/lockout.html"
+
+# ---------------------------------------------------------------------------
+# 2FA (TOTP)
+# ---------------------------------------------------------------------------
+OTP_TOTP_ISSUER = env("TOTP_ISSUER", default="O Último Blog do Mundo")
 
 # ---------------------------------------------------------------------------
 # Logging

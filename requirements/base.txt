@@ -11,3 +11,9 @@ nh3~=0.2
 django-crispy-forms~=2.3
 crispy-bootstrap5~=2024.10
 django-bootstrap5~=24.3
+
+# Security, 2FA & Rate limiting (Milestone 3)
+django-axes~=9.0
+django-otp~=1.7
+qrcode~=8.2
+argon2-cffi~=25.1
