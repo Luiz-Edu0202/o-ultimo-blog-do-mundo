@@ -11,7 +11,7 @@ whitenoise~=6.8
 psycopg[binary]~=3.2
 
 # Argon2 password hashing
-argon2-cffi~=23.1
+argon2-cffi~=25.1
 
 # Supabase Storage (S3-compatible)
 django-storages[s3]~=1.14
