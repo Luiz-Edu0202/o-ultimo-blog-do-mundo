@@ -1,0 +1,54 @@
+"""
+Local development settings.
+
+Uses SQLite by default, DEBUG=True, email to console.
+"""
+
+from .base import *
+from .base import env
+
+# ---------------------------------------------------------------------------
+# Debug
+# ---------------------------------------------------------------------------
+DEBUG = True
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]  # noqa: S104
+
+# ---------------------------------------------------------------------------
+# Secret key — only for local dev
+# ---------------------------------------------------------------------------
+SECRET_KEY = env(
+    "SECRET_KEY",
+    default="django-insecure-local-dev-key-do-not-use-in-production",
+)
+
+# ---------------------------------------------------------------------------
+# Database — SQLite for local without Docker
+# ---------------------------------------------------------------------------
+DATABASES = {
+    "default": env.db(
+        "DATABASE_URL",
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+    ),
+}
+
+# ---------------------------------------------------------------------------
+# Email — console backend
+# ---------------------------------------------------------------------------
+MAILERS = {
+    "default": {
+        "BACKEND": "django.core.mail.backends.console.EmailBackend",
+    },
+}
+
+# ---------------------------------------------------------------------------
+# Static / Media
+# ---------------------------------------------------------------------------
+# Use default filesystem storage in development
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}

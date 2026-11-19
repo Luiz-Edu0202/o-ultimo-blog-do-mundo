@@ -1,0 +1,79 @@
+[project]
+name = "o-ultimo-blog-do-mundo"
+version = "0.1.0"
+description = "Personal tech blog and DevOps portfolio project"
+requires-python = ">=3.12"
+
+# ============================================================================
+# Ruff — linter & formatter
+# ============================================================================
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["."]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "S",    # flake8-bandit (security)
+    "A",    # flake8-builtins
+    "C4",   # flake8-comprehensions
+    "DJ",   # flake8-django
+    "T20",  # flake8-print
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff-specific rules
+]
+ignore = [
+    "S101",   # assert used (fine in tests)
+    "RUF012", # mutable class attributes (Django models)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"config/settings/*.py" = ["F405", "F403", "E501"]  # star imports in settings
+"tests/**/*.py" = ["S101", "S106", "S110"]          # assert, hardcoded passwords, try-except-pass OK in tests
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config"]
+
+# ============================================================================
+# pytest
+# ============================================================================
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.local"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+pythonpath = ["."]
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+    "-q",
+]
+
+# ============================================================================
+# coverage
+# ============================================================================
+[tool.coverage.run]
+source = ["apps", "config"]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "config/settings/*",
+    "config/asgi.py",
+    "config/wsgi.py",
+    "manage.py",
+]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.",
+]
