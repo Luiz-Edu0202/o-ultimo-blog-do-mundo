@@ -11,7 +11,7 @@ from .base import env
 # Debug
 # ---------------------------------------------------------------------------
 DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]  # noqa: S104
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0", "testserver"]  # noqa: S104
 
 # ---------------------------------------------------------------------------
 # Secret key — only for local dev
