@@ -50,7 +50,11 @@ DJANGO_APPS = [
     "django.contrib.syndication",
 ]
 
-THIRD_PARTY_APPS: list[str] = []
+THIRD_PARTY_APPS = [
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "django_bootstrap5",
+]
 
 LOCAL_APPS = [
     "apps.core",
@@ -60,6 +64,12 @@ LOCAL_APPS = [
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# ---------------------------------------------------------------------------
+# Crispy Forms
+# ---------------------------------------------------------------------------
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # ---------------------------------------------------------------------------
 # Middleware

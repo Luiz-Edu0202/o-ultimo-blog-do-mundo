@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}#{{ tag.name }} | {{ site_config.site_title_pt }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9">
+    <div class="mb-4 pb-2 border-bottom">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <a href="{% url 'blog:home' %}" class="text-decoration-none text-muted small">&larr; {% trans "Todos os artigos" %}</a>
+      </div>
+      <h1 class="display-6 fw-bold">
+        <span class="text-primary">#</span>{{ tag.name }}
+      </h1>
+      <p class="text-muted">
+        {% blocktrans count counter=posts|length %}
+          1 artigo encontrado com esta tag
+        {% plural %}
+          {{ counter }} artigos encontrados com esta tag
+        {% endblocktrans %}
+      </p>
+    </div>
+
+    {% if posts %}
+      {% for post in posts %}
+        <article class="card mb-4 shadow-sm border-0 bg-body-tertiary">
+          <div class="card-body">
+            <div class="d-flex align-items-center gap-2 mb-2 text-muted small">
+              <time datetime="{{ post.published_at|date:'c' }}">
+                <i class="bi bi-calendar3"></i> {{ post.published_at|date:"d M Y" }}
+              </time>
+              <span>&bull;</span>
+              <span><i class="bi bi-clock"></i> {{ post.reading_time }} min</span>
+            </div>
+
+            <h2 class="card-title h4 mb-2">
+              <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-body">
+                {{ post.title }}
+              </a>
+            </h2>
+
+            <p class="card-text text-secondary">
+              {{ post.summary|default:post.content_md|truncatewords:35 }}
+            </p>
+
+            <a href="{{ post.get_absolute_url }}" class="btn btn-sm btn-outline-primary">
+              {% trans "Ler artigo" %} &rarr;
+            </a>
+          </div>
+        </article>
+      {% endfor %}
+
+      {% if is_paginated %}
+        <nav aria-label="{% trans 'Navegação de páginas' %}" class="mt-4">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+            {% for num in paginator.page_range %}
+              <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+
+    {% else %}
+      <div class="alert alert-info">
+        {% trans "Nenhum artigo encontrado com esta tag no idioma atual." %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

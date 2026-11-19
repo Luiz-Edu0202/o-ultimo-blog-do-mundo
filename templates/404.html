@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}404 - {% trans "Página não encontrada" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5 text-center">
+  <div class="col-md-7">
+    <h1 class="display-1 fw-bold text-primary">404</h1>
+    <h2 class="h3 mb-3">{% trans "Página não encontrada" %}</h2>
+    <p class="lead text-secondary mb-4">
+      {% trans "O artigo ou página que você está procurando pode ter sido movido, renomeado ou excluído." %}
+    </p>
+    <a href="{% url 'blog:home' %}" class="btn btn-primary">
+      <i class="bi bi-house"></i> {% trans "Voltar para o início" %}
+    </a>
+  </div>
+</div>
+{% endblock %}

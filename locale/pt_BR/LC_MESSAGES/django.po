@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 20:10-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: templates/404.html:4 templates/404.html:10
+msgid "Página não encontrada"
+msgstr ""
+
+#: templates/404.html:12
+msgid ""
+"O artigo ou página que você está procurando pode ter sido movido, renomeado "
+"ou excluído."
+msgstr ""
+
+#: templates/404.html:15 templates/500.html:15
+msgid "Voltar para o início"
+msgstr ""
+
+#: templates/500.html:4 templates/500.html:10
+msgid "Erro interno do servidor"
+msgstr ""
+
+#: templates/500.html:12
+msgid ""
+"Ocorreu um erro inesperado ao processar sua requisição. Por favor, tente "
+"novamente mais tarde."
+msgstr ""
+
+#: templates/base.html:32
+msgid "Pular para o conteúdo principal"
+msgstr ""
+
+#: templates/base.html:36
+msgid "Navegação principal"
+msgstr ""
+
+#: templates/base.html:41
+msgid "Alternar navegação"
+msgstr ""
+
+#: templates/base.html:48
+msgid "Artigos"
+msgstr ""
+
+#: templates/base.html:51 templates/core/about.html:4
+msgid "Sobre"
+msgstr ""
+
+#: templates/base.html:58 templates/blog/post_search.html:25
+msgid "Buscar artigos..."
+msgstr ""
+
+#: templates/base.html:58 templates/blog/post_search.html:27
+msgid "Buscar"
+msgstr ""
+
+#: templates/base.html:59
+msgid "Executar busca"
+msgstr ""
+
+#: templates/base.html:66
+msgid "Seletor de idioma"
+msgstr ""
+
+#: templates/base.html:72
+msgid "Alternar tema claro/escuro"
+msgstr ""
+
+#: templates/base.html:89
+msgid "Todos os direitos reservados."
+msgstr ""
+
+#: templates/blog/post_detail.html:60 templates/blog/post_list.html:33
+msgid "de leitura"
+msgstr ""
+
+#: templates/blog/post_detail.html:123
+msgid "Voltar para todos os artigos"
+msgstr ""
+
+#: templates/blog/post_detail.html:126
+msgid "Voltar ao topo"
+msgstr ""
+
+#: templates/blog/post_list.html:54 templates/blog/post_list.html:55
+#: templates/blog/post_search.html:55 templates/blog/tag_post_list.html:48
+msgid "Ler artigo"
+msgstr ""
+
+#: templates/blog/post_list.html:64 templates/blog/post_search.html:62
+#: templates/blog/tag_post_list.html:55
+msgid "Navegação de páginas"
+msgstr ""
+
+#: templates/blog/post_list.html:68
+msgid "Anterior"
+msgstr ""
+
+#: templates/blog/post_list.html:86
+msgid "Próximo"
+msgstr ""
+
+#: templates/blog/post_list.html:99
+msgid "Nenhum artigo publicado encontrado neste idioma."
+msgstr ""
+
+#: templates/blog/post_list.html:105
+msgid "Barra lateral"
+msgstr ""
+
+#: templates/blog/post_list.html:108
+msgid "Sobre o autor"
+msgstr ""
+
+#: templates/blog/post_list.html:117
+msgid "Saiba mais"
+msgstr ""
+
+#: templates/blog/post_list.html:125
+msgid "Tags"
+msgstr ""
+
+#: templates/blog/post_search.html:4
+msgid "Busca"
+msgstr ""
+
+#: templates/blog/post_search.html:11
+msgid "Resultados para"
+msgstr ""
+
+#: templates/blog/post_search.html:14
+#, python-format
+msgid ""
+"\n"
+"          1 resultado encontrado\n"
+"        "
+msgid_plural ""
+"\n"
+"          %(counter)s resultados encontrados\n"
+"        "
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/blog/post_search.html:82
+msgid "Nenhum artigo encontrado correspondente à sua busca."
+msgstr ""
+
+#: templates/blog/tag_post_list.html:11
+msgid "Todos os artigos"
+msgstr ""
+
+#: templates/blog/tag_post_list.html:17
+#, python-format
+msgid ""
+"\n"
+"          1 artigo encontrado com esta tag\n"
+"        "
+msgid_plural ""
+"\n"
+"          %(counter)s artigos encontrados com esta tag\n"
+"        "
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/blog/tag_post_list.html:74
+msgid "Nenhum artigo encontrado com esta tag no idioma atual."
+msgstr ""
+
+#: templates/core/about.html:11
+msgid "Sobre o Autor"
+msgstr ""
+
+#: templates/core/about.html:20
+msgid "Conecte-se comigo"
+msgstr ""
