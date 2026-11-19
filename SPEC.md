@@ -48,8 +48,8 @@ O foco é **backend e infraestrutura**. O front deve ser funcional, acessível e
 
 ## 3. Stack
 
-- **Linguagem/Framework**: Python 3.12 + Django 5.x.
-- **Banco**: SQLite (local sem Docker) e PostgreSQL 16 (produção/Supabase; local via Docker).
+- **Linguagem/Framework**: Python 3.12 + Django 6.1.x.
+- **Banco**: SQLite (local sem Docker) e PostgreSQL 16 (produção/Supabase; local via Docker). Driver: `psycopg[binary]` (psycopg3, recomendado pelo Django 6.x).
 - **Cache/Sessões**: Redis 7 (local via Docker; Upstash em produção).
 - **Armazenamento de mídia**: Supabase Storage via API S3-compatível (`django-storages[s3]` + `boto3`).
 - **Servidor WSGI**: Gunicorn.
