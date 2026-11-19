@@ -143,8 +143,8 @@ Veja o arquivo [`.env.example`](.env.example) para a lista completa com document
 ## 🗺️ Roadmap (Milestones)
 
 - [x] **M1 — Fundação**: estrutura, settings, CI esqueleto
-- [x] **M2 — Domínio público**: modelos, i18n, Markdown, views, SEO *(atual)*
-- [ ] **M3 — Dashboard**: login, 2FA, CRUD, preview
+- [x] **M2 — Domínio público**: modelos, i18n, Markdown, views, SEO
+- [x] **M3 — Dashboard**: login, 2FA, CRUD, preview *(atual)*
 - [ ] **M4 — Docker**: Dockerfile, compose, healthcheck
 - [ ] **M5 — Produção**: Supabase, Upstash, Render, CI completo
 - [ ] **M6 — Polimento**: acessibilidade, testes finais, screenshots
