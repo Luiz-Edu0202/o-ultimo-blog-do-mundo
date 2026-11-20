@@ -5,6 +5,30 @@ Todas as mudanças notáveis do projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [0.5.0] - 2026-11-20
+
+### Adicionado (Milestone 5 — Produção)
+
+- **Infraestrutura em Nuvem (Custo Zero)**:
+  - Documentação e configuração de integração com Supabase (PostgreSQL 16 com PgBouncer, `DISABLE_SERVER_SIDE_CURSORS=True`, connection pooling e Supabase Storage via S3).
+  - Configuração do Upstash Redis 7 para cache e gerenciamento de sessões com expiração de 8h.
+  - Configuração do serviço de deploy no Render Web Service baseado no Dockerfile multi-stage.
+- **Pipeline CI/CD Completo (`.github/workflows/ci.yml`)**:
+  - Job `security`: auditoria de vulnerabilidades de dependências via `pip-audit` e scan de sistema de arquivos via Trivy.
+  - Job `test`: execução com serviços reais `postgres:16-alpine` e `redis:7-alpine` no GitHub Actions, garantindo que os testes rodem em ambiente idêntico ao de produção.
+  - Job `build`: build multi-stage com Docker Buildx, push para o GitHub Container Registry (`ghcr.io`) com tags `:sha-<commit>` e `:latest`, e scan da imagem Docker gerada com Trivy.
+  - Job `deploy`: disparo automático do webhook do Render (`RENDER_DEPLOY_HOOK_URL`) exclusivamente em push na branch `main` após aprovação de todos os jobs anteriores, integrado ao GitHub Environment `production`.
+- **Automação e Manutenção**:
+  - Dependabot: adicionado monitoramento semanal de dependências do ecossistema `docker` no `.github/dependabot.yml`.
+  - Workflow `keep_alive.yml`: agendamento a cada 3 horas (e disparo manual via `workflow_dispatch`) para pingar `/healthz` no Render e evitar dormência do container gratuito e inatividade do projeto no Supabase.
+  - Workflow `backup.yml`: rotina agendada semanalmente (e disparo manual) executando `pg_dump` no PostgreSQL e salvando o artefato de backup com retenção de 30 dias no GitHub Actions.
+- **Operação e Recuperação de Desastres**:
+  - `docs/backup_restore.md`: manual completo de procedimentos operacionais para backup manual e automático, restauração de dump (`pg_restore`), exportação de arquivos de mídia do Supabase Storage, aplicação de migrações e rollback de deploy no Render.
+  - `.env.example`: atualizado com a documentação de todas as variáveis de ambiente necessárias para os serviços de produção.
+- **Testes e Qualidade**:
+  - 16 novos testes automatizados em `tests/test_production_settings.py` validando os parâmetros de segurança de `config/settings/production.py` (`DEBUG=False`, `ALLOWED_HOSTS`, redirecionamento HTTPS, HSTS, cookies seguros, Argon2, S3 Storage, WhiteNoise, connection pooling e falha explícita na ausência de variáveis obrigatórias).
+  - Total de 89 testes automatizados passando com cobertura de 92.33% (mínimo exigido: 80%).
+
 ## [0.4.0] - 2026-11-20
 
 ### Adicionado (Milestone 4 — Docker)

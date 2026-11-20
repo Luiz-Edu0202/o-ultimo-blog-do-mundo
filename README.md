@@ -58,10 +58,15 @@ o-ultimo-blog-do-mundo/
 │   ├── base.txt               # Deps compartilhadas
 │   ├── local.txt              # Deps de dev
 │   └── production.txt         # Deps de produção
+├── docs/                      # Documentação operacional
+│   └── backup_restore.md      # Backup, restore e rollback
 ├── pyproject.toml             # Ruff, pytest, coverage config
 ├── .pre-commit-config.yaml    # Pre-commit hooks
 ├── .github/
-│   ├── workflows/ci.yml       # Pipeline CI/CD
+│   ├── workflows/
+│   │   ├── ci.yml             # Pipeline CI/CD
+│   │   ├── keep_alive.yml     # Ping periódico (Render + Supabase)
+│   │   └── backup.yml         # Backup semanal do banco
 │   └── dependabot.yml         # Atualização automática de deps
 ├── .env.example               # Variáveis de ambiente (template)
 └── backups/                   # Backups locais (ignorado no Git)
@@ -190,10 +195,37 @@ pre-commit run --all-files
 O GitHub Actions executa em push/PR para `main`:
 
 1. **lint** — Ruff check + format check
-2. **test** — pytest com cobertura ≥ 80%
-3. **security** — *(habilitado no Milestone 5)*
+2. **test** — pytest com cobertura ≥ 80% (com PostgreSQL e Redis via services)
+3. **security** — pip-audit + Trivy filesystem scan
 4. **build** — Docker Buildx → push GHCR (`:sha` + `:latest`) → Trivy scan da imagem
-5. **deploy** — *(habilitado no Milestone 5)*
+5. **deploy** — Render deploy hook (dispara redeploy automático)
+
+### Workflows adicionais
+
+- **keep_alive** — cron a cada 3 h: pinga `https://o-ultimo-blog-do-mundo.onrender.com/healthz` para evitar dormência do Render e inatividade do Supabase.
+- **backup** — cron semanal: executa `pg_dump` do Supabase e faz upload do artefato para o GitHub Actions.
+
+## 🚀 Produção — Supabase, Upstash & Render
+
+### Serviços utilizados (todos free tier)
+
+| Serviço | Função | Variáveis de ambiente |
+|---------|--------|-----------------------|
+| **Supabase** | PostgreSQL 16 + Storage S3 | `DATABASE_URL`, `SUPABASE_S3_ENDPOINT`, `SUPABASE_S3_ACCESS_KEY`, `SUPABASE_S3_SECRET_KEY`, `SUPABASE_STORAGE_BUCKET` |
+| **Upstash** | Redis 7 (cache + sessões) | `REDIS_URL` |
+| **Render** | Web Service (Docker) | `RENDER_DEPLOY_HOOK_URL` (GitHub Secret) |
+
+### Como fazer deploy
+
+1. Crie os serviços no Supabase, Upstash e Render (todos free tier).
+2. No painel do **Render**, configure como Web Service apontando para o repositório GitHub ou use o deploy hook.
+3. Configure as variáveis de ambiente no Render (veja `.env.example` para a lista completa).
+4. Adicione `RENDER_DEPLOY_HOOK_URL` como secret no GitHub Actions.
+5. A cada push na `main`, o CI faz build → push GHCR → dispara deploy no Render.
+
+### Backup, restore e rollback
+
+Veja a documentação completa em [`docs/backup_restore.md`](docs/backup_restore.md).
 
 ## 📌 Variáveis de ambiente
 
@@ -204,8 +236,8 @@ Veja o arquivo [`.env.example`](.env.example) para a lista completa com document
 - [x] **M1 — Fundação**: estrutura, settings, CI esqueleto
 - [x] **M2 — Domínio público**: modelos, i18n, Markdown, views, SEO
 - [x] **M3 — Dashboard**: login, 2FA, CRUD, preview
-- [x] **M4 — Docker**: Dockerfile multi-stage, compose, healthcheck, CI build *(atual)*
-- [ ] **M5 — Produção**: Supabase, Upstash, Render, CI completo
+- [x] **M4 — Docker**: Dockerfile multi-stage, compose, healthcheck, CI build
+- [x] **M5 — Produção**: Supabase, Upstash, Render, CI completo *(atual)*
 - [ ] **M6 — Polimento**: acessibilidade, testes finais, screenshots
 
 ## 📄 Licença
