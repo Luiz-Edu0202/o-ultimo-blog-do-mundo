@@ -5,6 +5,43 @@ Todas as mudanças notáveis do projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [0.4.0] - 2026-11-20
+
+### Adicionado (Milestone 4 — Docker)
+
+- **Containerização**:
+  - `Dockerfile` multi-stage (`builder` → `final`) baseado em `python:3.12-slim`.
+  - Estágio `builder` instala dependências de build (gcc, libpq-dev) e pacotes Python em prefix isolado (`/install`).
+  - Estágio `final` copia apenas o necessário, executa `collectstatic` durante o build (com `ARG SECRET_KEY` dummy, nunca em runtime) e WhiteNoise serve os estáticos.
+  - Usuário non-root `appuser` (uid 1000) — a imagem não roda como root.
+  - `HEALTHCHECK` Docker nativo chamando `/healthz` a cada 30s.
+  - Gunicorn como entrypoint, workers e timeout configuráveis via env (`GUNICORN_WORKERS`, `GUNICORN_TIMEOUT`, `PORT`).
+  - `.dockerignore` completo excluindo `.venv`, `media/`, `db.sqlite3`, `.env`, caches e arquivos de CI.
+- **Docker Compose local**:
+  - `docker-compose.yml` com três serviços: `web` (build local), `db` (postgres:16-alpine) e `redis` (redis:7-alpine).
+  - Volumes nomeados `postgres_data` e `redis_data` para persistência de dados.
+  - Healthchecks nativos em `db` (`pg_isready`) e `redis` (`redis-cli ping`).
+  - `web` só sobe após `db` e `redis` estarem healthy (`depends_on: condition: service_healthy`).
+  - Variáveis `DATABASE_URL` e `REDIS_URL` injetadas pelo compose, apontando para serviços internos.
+- **Healthcheck `/healthz` aprimorado**:
+  - Endpoint migrado de texto puro para JSON: `{"status": "ok", "checks": {"db": "ok", "cache": "ok"}}`.
+  - Valida conectividade real com o banco de dados (executa `SELECT 1`) e com o cache Redis (set/get).
+  - Retorna HTTP 503 com `{"status": "error", "checks": {...}}` em caso de falha em qualquer serviço.
+- **Pipeline CI/CD — job `build` ativado**:
+  - Docker Buildx com cache de GitHub Actions (`type=gha`).
+  - Login no GHCR com `GITHUB_TOKEN` (permissão `packages: write`).
+  - Build e push da imagem com tags `:sha-<git_sha>` e `:latest` (apenas em `main`).
+  - Trivy scan da imagem após push (modo `table`, `exit-code: 0` — reporta sem bloquear; bloqueio habilitado no M5).
+- **Makefile**:
+  - Atalhos para todos os fluxos comuns: `make up`, `make down`, `make migrate`, `make test-docker`, `make shell`, `make build`, `make test`, `make lint`.
+- **Testes**:
+  - 12 novos testes em `tests/test_healthcheck.py` cobrindo: retorno 200/JSON, status ok, checks de DB e cache, retorno 503 em falha de DB, retorno 503 em falha de cache, acesso público sem autenticação, conectividade direta de DB e cache.
+  - Cobertura total mantida: 92.33% (mínimo exigido: 80%).
+- **Documentação**:
+  - `.env.example` atualizado com variáveis do compose (`POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`).
+  - README: nova seção "🐳 Rodando com Docker" com comandos completos de setup, uso e Makefile.
+  - `pyproject.toml`: marker `integration` registrado para futuros testes de integração Docker.
+
 ## [0.3.0] - 2026-11-19
 
 ### Adicionado (Milestone 3 — Dashboard administrativo)

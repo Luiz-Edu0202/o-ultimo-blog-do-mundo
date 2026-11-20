@@ -107,7 +107,64 @@ python manage.py runserver
 # Acessar http://localhost:8000/healthz — deve retornar "ok"
 ```
 
-## ✅ Qualidade de código
+## 🐳 Rodando com Docker
+
+### Pré-requisitos
+
+- Docker 24+ e Docker Compose v2
+
+### Setup
+
+```bash
+# Copie o .env e ajuste as variáveis (os defaults já funcionam para o compose local)
+cp .env.example .env
+
+# Suba todos os serviços (web + PostgreSQL + Redis)
+docker compose up --build
+
+# Em outro terminal: aplique as migrações
+docker compose exec web python manage.py migrate
+
+# Acesse:
+# http://localhost:8000        — site público
+# http://localhost:8000/healthz — healthcheck (retorna JSON com status de DB e Redis)
+```
+
+### Comandos úteis
+
+```bash
+# Parar containers e remover volumes
+docker compose down -v
+
+# Rodar testes dentro do container
+docker compose run --rm web pytest --cov --cov-report=term-missing
+
+# Criar superusuário
+docker compose exec web python manage.py createsuperuser
+
+# Ver logs
+docker compose logs -f web
+
+# Usar o Makefile (atalhos)
+make up          # docker compose up --build
+make down        # docker compose down -v
+make migrate     # migrações dentro do container
+make test-docker # testes dentro do container
+make shell       # Django shell dentro do container
+```
+
+### Variáveis do Compose
+
+As variáveis `DATABASE_URL` e `REDIS_URL` são injetadas automaticamente pelo `docker-compose.yml` apontando para os containers internos. Para personalizar o banco local, edite no `.env`:
+
+```
+POSTGRES_DB=blog
+POSTGRES_USER=blog
+POSTGRES_PASSWORD=blog
+```
+
+---
+
 
 ```bash
 # Lint
@@ -133,7 +190,7 @@ O GitHub Actions executa em push/PR para `main`:
 1. **lint** — Ruff check + format check
 2. **test** — pytest com cobertura ≥ 80%
 3. **security** — *(habilitado no Milestone 5)*
-4. **build** — *(habilitado no Milestone 4)*
+4. **build** — Docker Buildx → push GHCR (`:sha` + `:latest`) → Trivy scan da imagem
 5. **deploy** — *(habilitado no Milestone 5)*
 
 ## 📌 Variáveis de ambiente
@@ -144,7 +201,8 @@ Veja o arquivo [`.env.example`](.env.example) para a lista completa com document
 
 - [x] **M1 — Fundação**: estrutura, settings, CI esqueleto
 - [x] **M2 — Domínio público**: modelos, i18n, Markdown, views, SEO
-- [x] **M3 — Dashboard**: login, 2FA, CRUD, preview *(atual)*
+- [x] **M3 — Dashboard**: login, 2FA, CRUD, preview
+- [x] **M4 — Docker**: Dockerfile multi-stage, compose, healthcheck, CI build *(atual)*
 - [ ] **M4 — Docker**: Dockerfile, compose, healthcheck
 - [ ] **M5 — Produção**: Supabase, Upstash, Render, CI completo
 - [ ] **M6 — Polimento**: acessibilidade, testes finais, screenshots
