@@ -4,6 +4,8 @@ Local development settings.
 Uses SQLite by default, DEBUG=True, email to console.
 """
 
+import sys
+
 from .base import *
 from .base import env
 
@@ -27,12 +29,18 @@ SECRET_KEY = env(
 # ---------------------------------------------------------------------------
 # Database — SQLite for local without Docker
 # ---------------------------------------------------------------------------
-DATABASES = {
-    "default": env.db(
-        "DATABASE_URL",
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-    ),
-}
+if "pytest" in sys.modules or "test" in sys.argv:
+    _test_db = env("TEST_DATABASE_URL", default="sqlite:///:memory:")
+    DATABASES = {
+        "default": env.db_url_config(_test_db),
+    }
+else:
+    DATABASES = {
+        "default": env.db(
+            "DATABASE_URL",
+            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        ),
+    }
 
 # ---------------------------------------------------------------------------
 # Email — console backend

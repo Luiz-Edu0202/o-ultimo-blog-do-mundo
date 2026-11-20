@@ -221,12 +221,14 @@ class TestFeedsAndSitemaps:
         assert "/posts/deploy-render-docker/" in content
 
     def test_robots_txt(self, client):
+        from django.conf import settings
+
         response = client.get("/robots.txt")
         assert response.status_code == 200
         assert response["Content-Type"] == "text/plain"
         content = response.content.decode("utf-8")
         assert "User-agent: *" in content
-        assert "Disallow: /gestao/" in content
+        assert f"Disallow: /{settings.ADMIN_PATH}/" in content
         assert "Sitemap:" in content
         assert "/sitemap.xml" in content
 
