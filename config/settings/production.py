@@ -50,6 +50,14 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS",
+    default=[
+        f"https://{h}"
+        for h in ALLOWED_HOSTS
+        if not h.startswith(".") and h not in ("localhost", "127.0.0.1", "0.0.0.0", "*")  # noqa: S104
+    ],
+)
 
 # ---------------------------------------------------------------------------
 # Password hashers — Argon2 as primary

@@ -48,6 +48,7 @@ data = {{
     "SECURE_HSTS_SECONDS": mod["SECURE_HSTS_SECONDS"],
     "SESSION_COOKIE_SECURE": mod["SESSION_COOKIE_SECURE"],
     "CSRF_COOKIE_SECURE": mod["CSRF_COOKIE_SECURE"],
+    "CSRF_TRUSTED_ORIGINS": mod["CSRF_TRUSTED_ORIGINS"],
     "PASSWORD_HASHERS": mod["PASSWORD_HASHERS"],
     "DB_ENGINE": db_opts["ENGINE"],
     "DISABLE_SERVER_SIDE_CURSORS": db_opts.get("DISABLE_SERVER_SIDE_CURSORS", False),
@@ -92,6 +93,10 @@ class TestProductionSettings:
     def test_secure_cookies(self, prod_settings):
         assert prod_settings["SESSION_COOKIE_SECURE"] is True
         assert prod_settings["CSRF_COOKIE_SECURE"] is True
+
+    def test_csrf_trusted_origins_includes_https(self, prod_settings):
+        origins = prod_settings["CSRF_TRUSTED_ORIGINS"]
+        assert "https://example.com" in origins
 
     def test_argon2_is_primary_hasher(self, prod_settings):
         assert "Argon2" in prod_settings["PASSWORD_HASHERS"][0]
