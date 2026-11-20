@@ -1,6 +1,6 @@
 # Base requirements — shared across all environments
 django~=6.1.3
-django-environ~=0.12.0
+django-environ~=0.14.0
 
 # Markdown & HTML processing
 markdown~=3.7
