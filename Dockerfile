@@ -74,6 +74,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')" || exit 1
 
 # Gunicorn entrypoint — configure via GUNICORN_WORKERS and GUNICORN_TIMEOUT env vars
+ENV DJANGO_SETTINGS_MODULE=config.settings.production
 ENV GUNICORN_WORKERS=2
 ENV GUNICORN_TIMEOUT=120
 ENV PORT=8000
