@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Django
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+
+# Linting
+.ruff_cache/
+
+# Git
+.git/
+.gitignore
+
+# Environment files — NEVER bake secrets into the image
+.env
+.env.*
+!.env.example
+
+# Backups
+backups/
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Docs & CI (not needed in runtime image)
+*.md
+.github/
+docs/
+
+# Misc
+*.log
+*.pot

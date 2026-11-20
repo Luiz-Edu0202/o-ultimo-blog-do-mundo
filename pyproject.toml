@@ -54,6 +54,9 @@ addopts = [
     "--tb=short",
     "-q",
 ]
+markers = [
+    "integration: marks tests as integration tests (require running Docker services)",
+]
 
 # ============================================================================
 # coverage

@@ -1,0 +1,76 @@
+# =============================================================================
+# O Último Blog do Mundo — Local development with Docker Compose
+# =============================================================================
+# Services:
+#   web   — Django app (Gunicorn, production settings, connects to db + redis)
+#   db    — PostgreSQL 16
+#   redis — Redis 7
+#
+# Usage:
+#   docker compose up --build          # start all services (rebuilds web image)
+#   docker compose exec web python manage.py migrate
+#   docker compose down -v             # stop and remove volumes
+#   docker compose run --rm web pytest # run tests inside container
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL 16
+  # ---------------------------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-blog}
+      POSTGRES_USER: ${POSTGRES_USER:-blog}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-blog}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-blog} -d ${POSTGRES_DB:-blog}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Redis 7
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # ---------------------------------------------------------------------------
+  # Django web application
+  # ---------------------------------------------------------------------------
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-blog}:${POSTGRES_PASSWORD:-blog}@db:5432/${POSTGRES_DB:-blog}
+      REDIS_URL: redis://redis:6379/0
+      ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:
