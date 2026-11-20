@@ -9,7 +9,7 @@
 # -----------------------------------------------------------------------------
 # Stage 1 — builder
 # -----------------------------------------------------------------------------
-FROM python:3.12-slim AS builder
+FROM python:3.15-slim AS builder
 
 # Install OS-level build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -30,7 +30,7 @@ RUN pip install --upgrade pip \
 # -----------------------------------------------------------------------------
 # Stage 2 — final
 # -----------------------------------------------------------------------------
-FROM python:3.12-slim AS final
+FROM python:3.15-slim AS final
 
 # Install runtime OS dependencies (libpq for psycopg)
 RUN apt-get update && apt-get install -y --no-install-recommends \
