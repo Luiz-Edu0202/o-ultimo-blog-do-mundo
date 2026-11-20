@@ -104,7 +104,8 @@ python manage.py check
 
 ```bash
 python manage.py runserver
-# Acessar http://localhost:8000/healthz — deve retornar "ok"
+# Acessar http://localhost:8000/healthz — retorna JSON com status do banco e cache:
+# {"status": "ok", "checks": {"db": "ok", "cache": "ok"}}
 ```
 
 ## 🐳 Rodando com Docker
@@ -165,6 +166,7 @@ POSTGRES_PASSWORD=blog
 
 ---
 
+## ✅ Qualidade de código
 
 ```bash
 # Lint
@@ -203,7 +205,6 @@ Veja o arquivo [`.env.example`](.env.example) para a lista completa com document
 - [x] **M2 — Domínio público**: modelos, i18n, Markdown, views, SEO
 - [x] **M3 — Dashboard**: login, 2FA, CRUD, preview
 - [x] **M4 — Docker**: Dockerfile multi-stage, compose, healthcheck, CI build *(atual)*
-- [ ] **M4 — Docker**: Dockerfile, compose, healthcheck
 - [ ] **M5 — Produção**: Supabase, Upstash, Render, CI completo
 - [ ] **M6 — Polimento**: acessibilidade, testes finais, screenshots
 
