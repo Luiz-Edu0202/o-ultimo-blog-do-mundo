@@ -1,0 +1,23 @@
+name: Keep Alive
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'  # every 3 hours
+  workflow_dispatch: {}   # allow manual trigger
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render health endpoint
+        run: |
+          curl -fsSL https://o-ultimo-blog-do-mundo.onrender.com/healthz || echo "Render health check failed"
+      - name: Ping Supabase health endpoint (if SUPABASE_URL secret provided)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        run: |
+          if [ -n "$SUPABASE_URL" ]; then
+            curl -fsSL "$SUPABASE_URL/health" || echo "Supabase health check failed"
+          else
+            echo "SUPABASE_URL not set; skipping Supabase ping"
+          fi

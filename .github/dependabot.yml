@@ -20,11 +20,11 @@ updates:
       - dependencies
       - ci
 
-  # Docker (enabled in Milestone 4)
-  # - package-ecosystem: docker
-  #   directory: "/"
-  #   schedule:
-  #     interval: weekly
-  #   labels:
-  #     - dependencies
-  #     - docker
+  # Docker (enabled in Milestone 5)
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies
+      - docker
