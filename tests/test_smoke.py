@@ -1,5 +1,8 @@
 """Smoke tests for project setup and configuration."""
 
+import json
+
+import pytest
 from django.test import RequestFactory
 
 from config.urls import healthcheck
@@ -39,14 +42,17 @@ class TestSystemCheck:
             raise AssertionError(msg)
 
 
+@pytest.mark.django_db
 class TestHealthcheck:
     """Verify the /healthz endpoint."""
 
     def test_healthcheck_returns_200(self):
-        """GET /healthz should return 200 with 'ok' body."""
+        """GET /healthz should return 200 with JSON body containing status ok."""
         factory = RequestFactory()
         request = factory.get("/healthz")
         response = healthcheck(request)
         assert response.status_code == 200
-        assert response.content == b"ok"
-        assert response["Content-Type"] == "text/plain"
+        data = json.loads(response.content)
+        assert data["status"] == "ok"
+        assert "checks" in data
+        assert response["Content-Type"] == "application/json"
