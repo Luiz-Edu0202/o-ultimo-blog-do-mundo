@@ -3,7 +3,9 @@
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
-from django.http import HttpResponse
+from django.core.cache import cache
+from django.db import connection
+from django.http import JsonResponse
 from django.urls import include, path
 
 from apps.blog.sitemaps import PostSitemap, StaticViewSitemap, TagSitemap
@@ -17,8 +19,33 @@ sitemaps = {
 
 
 def healthcheck(request):
-    """Healthcheck endpoint responding 200 OK."""
-    return HttpResponse("ok", content_type="text/plain")
+    """Healthcheck endpoint that validates DB and cache connectivity.
+
+    Returns 200 with JSON body {"status": "ok"} when everything is healthy.
+    Returns 503 with JSON body {"status": "error", "details": {...}} on failure.
+    """
+    checks = {}
+
+    # --- Database check ---
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        checks["db"] = "ok"
+    except Exception as exc:
+        checks["db"] = f"error: {exc}"
+
+    # --- Cache / Redis check ---
+    try:
+        cache.set("healthcheck", "ok", timeout=5)
+        value = cache.get("healthcheck")
+        checks["cache"] = "ok" if value == "ok" else "error: unexpected value"
+    except Exception as exc:
+        checks["cache"] = f"error: {exc}"
+
+    all_ok = all(v == "ok" for v in checks.values())
+    status_code = 200 if all_ok else 503
+    payload = {"status": "ok" if all_ok else "error", "checks": checks}
+    return JsonResponse(payload, status=status_code)
 
 
 admin_path = getattr(settings, "ADMIN_PATH", "gestao").strip("/")
