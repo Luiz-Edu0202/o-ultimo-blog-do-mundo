@@ -8,7 +8,7 @@ Pygments~=2.18
 nh3~=0.2
 
 # Front-end forms & helpers
-django-crispy-forms~=2.3
+django-crispy-forms~=2.7
 crispy-bootstrap5~=2024.10
 django-bootstrap5~=24.3
 
