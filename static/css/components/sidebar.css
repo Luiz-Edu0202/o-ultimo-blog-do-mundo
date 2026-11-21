@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Sidebar — Home page sidebar cards
+   Uses CSS custom properties from tokens.css
+   ========================================================================== */
+
+.sidebar-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* -- Sidebar title with comment prefix ------------------------------------- */
+
+.sidebar-card .sidebar-title {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.sidebar-card .sidebar-title::before {
+  content: '// ';
+  color: var(--border-accent);
+}
+
+/* -- Sidebar body text ----------------------------------------------------- */
+
+.sidebar-card .sidebar-text {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+/* -- Sidebar link ---------------------------------------------------------- */
+
+.sidebar-card .sidebar-link {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.sidebar-card .sidebar-link:hover {
+  color: var(--accent-hover);
+}
+
+/* -- Tags cloud ------------------------------------------------------------ */
+
+.tags-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}

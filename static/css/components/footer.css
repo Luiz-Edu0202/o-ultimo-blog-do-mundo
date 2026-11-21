@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Footer — Terminal-style site footer
+   Uses CSS custom properties from tokens.css
+   ========================================================================== */
+
+.site-footer {
+  border-top: 1px dashed var(--border-subtle);
+  padding: 1.5rem 0;
+  margin-top: auto;
+  background: var(--bg-void);
+}
+
+.site-footer .footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* -- Terminal prompt ------------------------------------------------------- */
+
+.site-footer .footer-prompt {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.site-footer .footer-prompt .prompt-user {
+  color: var(--accent);
+}
+
+.site-footer .footer-prompt .prompt-path {
+  color: var(--text-body);
+}
+
+.site-footer .footer-prompt .prompt-symbol {
+  color: var(--accent);
+  margin: 0 0.25rem;
+}
+
+/* -- Footer links ---------------------------------------------------------- */
+
+.site-footer .footer-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer .footer-links a {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+}
+
+.site-footer .footer-links a:hover {
+  color: var(--accent);
+}
+
+/* -- Copyright ------------------------------------------------------------- */
+
+.site-footer .footer-copyright {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  width: 100%;
+  text-align: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+/* -- Responsive ------------------------------------------------------------ */
+
+@media (max-width: 575.98px) {
+  .site-footer .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}

@@ -1,0 +1,188 @@
+/* ==========================================================================
+   Navbar — Terminal-inspired sticky navigation
+   Uses CSS custom properties from tokens.css
+   ========================================================================== */
+
+.site-header {
+  border-bottom: 1px dashed var(--border-subtle);
+  background: var(--bg-void);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  backdrop-filter: blur(8px);
+  /* slight transparency for glass effect */
+  background: rgba(10, 12, 16, 0.85);
+}
+
+[data-bs-theme="light"] .site-header {
+  background: rgba(245, 246, 248, 0.9);
+}
+
+.site-header .navbar {
+  padding: 0.75rem 0;
+}
+
+/* -- Brand ----------------------------------------------------------------- */
+
+.site-brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.site-brand:hover {
+  color: var(--accent);
+}
+
+.site-brand .brand-version {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* -- Nav links ------------------------------------------------------------- */
+
+.site-nav .nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.4rem 0.75rem;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  letter-spacing: 0.02em;
+}
+
+.site-nav .nav-link:hover,
+.site-nav .nav-link:focus {
+  color: var(--accent);
+}
+
+.site-nav .nav-link::before {
+  content: '>';
+  margin-right: 0.35rem;
+  color: var(--border-accent);
+  font-weight: 400;
+}
+
+/* -- Search ---------------------------------------------------------------- */
+
+.nav-search .form-control {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-body);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.nav-search .form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.nav-search .form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.nav-search .btn {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.nav-search .btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* -- Language selector ----------------------------------------------------- */
+
+.lang-selector .btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  background: transparent;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.lang-selector .btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lang-selector .btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg-void);
+}
+
+/* -- Theme toggle ---------------------------------------------------------- */
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* -- Offcanvas (mobile nav) ------------------------------------------------ */
+
+.offcanvas.offcanvas-nav {
+  background: var(--bg-void);
+  border-left: 1px solid var(--border-subtle);
+}
+
+.offcanvas-nav .nav-link {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-body);
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.offcanvas-nav .nav-link:hover {
+  color: var(--accent);
+  background: var(--bg-surface);
+}
+
+.offcanvas-nav .offcanvas-header {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.offcanvas-nav .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+[data-bs-theme="light"] .offcanvas-nav .btn-close {
+  filter: none;
+}

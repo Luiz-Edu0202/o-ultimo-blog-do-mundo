@@ -1,0 +1,264 @@
+/* ===== Dashboard Components ===== */
+/* Dashboard restyling with terminal identity */
+
+/* Dashboard header */
+.dash-header {
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-void);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.dash-header .navbar {
+  padding: 0.5rem 0;
+}
+
+.dash-brand {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dash-brand .dash-icon {
+  color: var(--accent);
+}
+
+.dash-brand:hover {
+  color: var(--accent);
+}
+
+/* Dashboard sidebar */
+.dash-sidebar {
+  min-height: calc(100vh - 50px);
+  border-right: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  padding: 1rem;
+}
+
+.dash-sidebar .nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-body);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.dash-sidebar .nav-link:hover {
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.dash-sidebar .nav-link.active {
+  background: var(--accent);
+  color: var(--bg-void);
+}
+
+/* Dashboard badges */
+.dash-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.dash-badge-success {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+/* Dashboard main content */
+.dash-main {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dash-main {
+    padding: 1.5rem 2rem;
+  }
+}
+
+/* Dashboard alerts */
+.dash-alert {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.dash-alert.alert-success {
+  border-left-color: var(--success);
+}
+
+.dash-alert.alert-danger {
+  border-left-color: var(--danger);
+}
+
+.dash-alert.alert-warning {
+  border-left-color: #EAB308;
+}
+
+/* Dashboard buttons */
+.btn-terminal {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-terminal-primary {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: var(--bg-void);
+}
+
+.btn-terminal-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--bg-void);
+}
+
+.btn-terminal-outline {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-body);
+}
+
+.btn-terminal-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-terminal-danger {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.btn-terminal-danger:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* Dashboard form inputs */
+.dash-form .form-control,
+.dash-form .form-select {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.dash-form .form-control:focus,
+.dash-form .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.dash-form label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+/* Dashboard login page */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-void);
+  padding: 2rem 1rem;
+}
+
+.login-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-card .login-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.login-card .login-icon {
+  color: var(--accent);
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.login-card .login-title {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.login-card .login-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.login-card .btn-login {
+  width: 100%;
+  padding: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: var(--bg-void);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.login-card .btn-login:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.login-back-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.login-back-link a {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.login-back-link a:hover {
+  color: var(--accent);
+}

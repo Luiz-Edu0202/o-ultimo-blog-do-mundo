@@ -6,72 +6,69 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-9">
-    <div class="mb-4 pb-2 border-bottom">
-      <div class="d-flex align-items-center gap-2 mb-2">
-        <a href="{% url 'blog:home' %}" class="text-decoration-none text-muted small">&larr; {% trans "Todos os artigos" %}</a>
-      </div>
-      <h1 class="display-6 fw-bold">
-        <span class="text-primary">#</span>{{ tag.name }}
+    <div class="page-header">
+      <a href="{% url 'blog:home' %}" class="back-link">&larr; {% trans "Todos os artigos" %}</a>
+      <h1 class="h2 mb-1">
+        <span class="highlight">#</span>{{ tag.name }}
       </h1>
-      <p class="text-muted">
-        {% blocktrans count counter=posts|length %}
-          1 artigo encontrado com esta tag
+      <p class="page-subtitle mb-0">
+        // {% blocktrans count counter=posts|length %}
+          1 transmissão catalogada nesta tag
         {% plural %}
-          {{ counter }} artigos encontrados com esta tag
+          {{ counter }} transmissões catalogadas nesta tag
         {% endblocktrans %}
       </p>
     </div>
 
     {% if posts %}
       {% for post in posts %}
-        <article class="card mb-4 shadow-sm border-0 bg-body-tertiary">
-          <div class="card-body">
-            <div class="d-flex align-items-center gap-2 mb-2 text-muted small">
-              <time datetime="{{ post.published_at|date:'c' }}">
-                <i class="bi bi-calendar3"></i> {{ post.published_at|date:"d M Y" }}
-              </time>
-              <span>&bull;</span>
-              <span><i class="bi bi-clock"></i> {{ post.reading_time }} min</span>
-            </div>
-
-            <h2 class="card-title h4 mb-2">
-              <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-body">
-                {{ post.title }}
-              </a>
-            </h2>
-
-            <p class="card-text text-secondary">
-              {{ post.summary|default:post.content_md|truncatewords:35 }}
-            </p>
-
-            <a href="{{ post.get_absolute_url }}" class="btn btn-sm btn-outline-primary">
-              {% trans "Ler artigo" %} &rarr;
-            </a>
+        <article class="post-card">
+          <div class="post-meta">
+            <time datetime="{{ post.published_at|date:'c' }}">
+              [{{ post.published_at|date:"Y.m.d" }}]
+            </time>
+            <span class="meta-separator">//</span>
+            <span>{{ post.reading_time }} MIN READ</span>
           </div>
+
+          <h2 class="post-title">
+            <a href="{{ post.get_absolute_url }}">
+              {{ post.title }}
+            </a>
+          </h2>
+
+          <p class="post-summary">
+            {{ post.summary|default:post.content_md|truncatewords:35 }}
+          </p>
+
+          <a href="{{ post.get_absolute_url }}" class="read-link">
+            <span>{% trans "Ler artigo" %}</span>
+            <span class="arrow">&rarr;</span>
+          </a>
         </article>
       {% endfor %}
 
       {% if is_paginated %}
-        <nav aria-label="{% trans 'Navegação de páginas' %}" class="mt-4">
-          <ul class="pagination justify-content-center">
+        <nav aria-label="{% trans 'Navegação de páginas' %}">
+          <ul class="pagination-terminal">
             {% if page_obj.has_previous %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt; prev</a></li>
             {% endif %}
             {% for num in paginator.page_range %}
               <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                <a class="page-link" href="?page={{ num }}">[{{ num }}]</a>
               </li>
             {% endfor %}
             {% if page_obj.has_next %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next &gt;</a></li>
             {% endif %}
           </ul>
         </nav>
       {% endif %}
 
     {% else %}
-      <div class="alert alert-info">
-        {% trans "Nenhum artigo encontrado com esta tag no idioma atual." %}
+      <div class="alert-terminal" role="alert">
+        // {% trans "Nenhum artigo encontrado com esta tag no idioma atual." %}
       </div>
     {% endif %}
   </div>

@@ -4,16 +4,28 @@
 {% block title %}500 - {% trans "Erro interno do servidor" %}{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center py-5 text-center">
-  <div class="col-md-7">
-    <h1 class="display-1 fw-bold text-danger">500</h1>
-    <h2 class="h3 mb-3">{% trans "Erro interno do servidor" %}</h2>
-    <p class="lead text-secondary mb-4">
-      {% trans "Ocorreu um erro inesperado ao processar sua requisição. Por favor, tente novamente mais tarde." %}
-    </p>
-    <a href="{% url 'blog:home' %}" class="btn btn-primary">
-      <i class="bi bi-house"></i> {% trans "Voltar para o início" %}
-    </a>
+<div class="error-page error-500">
+  <div class="error-ascii" aria-hidden="true">
+  ____   ___   ___  
+ | ___| / _ \ / _ \ 
+ |___ \| | | | | | |
+  ___) | |_| | |_| |
+ |____/ \___/ \___/ 
   </div>
+
+  <div class="error-code">500</div>
+  <div class="error-message">// ERR_CORE_FAULT: {% trans "Erro interno do servidor" %}</div>
+
+  <p class="error-description">
+    {% trans "Falha crítica ao processar a requisição no subsistema. O evento foi registrado para depuração." %}
+  </p>
+
+  <div class="error-prompt">
+    <span class="text-danger">&gt;</span> kernel panic: fatal exception in transmission
+  </div>
+
+  <a href="{% url 'blog:home' %}" class="btn-home">
+    &lt; {% trans "Retornar ao início" %}
+  </a>
 </div>
 {% endblock %}

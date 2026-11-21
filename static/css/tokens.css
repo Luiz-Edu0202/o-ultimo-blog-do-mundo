@@ -1,0 +1,72 @@
+/* ==========================================================================
+   tokens.css — Design tokens (CSS custom properties)
+   Theme: "Soft Cyberpunk / Retro-Futuristic Terminal"
+   Supports dark (default) and light themes via [data-bs-theme]
+   ========================================================================== */
+
+/* --- Shared tokens (theme-independent) ---------------------------------- */
+
+:root {
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+
+  --content-width: 720px;
+  --page-width: 1200px;
+}
+
+/* --- Dark theme (primary / default) ------------------------------------- */
+
+:root,
+:root[data-bs-theme="dark"] {
+  --bg-void: #0A0C10;          /* Page background                        */
+  --bg-surface: #12151C;       /* Cards, panels                          */
+  --bg-elevated: #1A1E28;      /* Hover states, tooltips, dropdowns      */
+
+  --border-subtle: #2A2F3A;    /* Container borders, dividers            */
+  --border-accent: #3D4451;    /* Hover borders, active separators       */
+
+  --text-primary: #E8ECF1;     /* Headings, primary text                 */
+  --text-body: #9BA4B5;        /* Body text, paragraphs                  */
+  --text-muted: #5C6577;       /* Metadata, dates, secondary info        */
+
+  --accent: #00E5CC;           /* Links, active tags, highlights, cursor */
+  --accent-hover: #33ECDA;     /* Accent hover state (lighter)           */
+  --accent-glow: rgba(0, 229, 204, 0.15); /* Subtle glow on hover/focus */
+  --accent-secondary: #38BDF8; /* Visited links, secondary elements      */
+
+  --danger: #FF3B5C;           /* Errors, deletion, alerts               */
+  --danger-hover: #FF5C78;     /* Danger hover                           */
+  --success: #34D399;          /* Success states                         */
+}
+
+/* --- Light theme -------------------------------------------------------- */
+
+:root[data-bs-theme="light"] {
+  --bg-void: #F5F6F8;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #EBEDF2;
+
+  --border-subtle: #D4D8E0;
+  --border-accent: #B8BFC9;
+
+  --text-primary: #111319;
+  --text-body: #3D4451;
+  --text-muted: #7A8292;
+
+  --accent: #009E8F;
+  --accent-hover: #008578;
+  --accent-glow: rgba(0, 158, 143, 0.1);
+  --accent-secondary: #1E7FBF;
+
+  --danger: #D32F4A;
+  --danger-hover: #B72640;
+  --success: #16A34A;
+}

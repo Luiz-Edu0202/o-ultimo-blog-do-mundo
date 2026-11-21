@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br" data-bs-theme="auto">
+<html lang="pt-br" data-bs-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +9,8 @@
   <!-- Bootstrap 5.3 CSS & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Syntax highlight & Design System -->
   <link rel="stylesheet" href="{% static 'css/pygments.css' %}">
   <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
@@ -22,98 +24,94 @@
     })();
   </script>
 
-  <style>
-    .sidebar {
-      min-height: calc(100vh - 56px);
-      border-right: 1px solid var(--bs-border-color);
-    }
-    .nav-link.active {
-      background-color: var(--bs-primary);
-      color: #fff !important;
-      border-radius: 0.375rem;
-    }
-  </style>
   {% block extra_head %}{% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
-  <!-- Top Navbar -->
-  <nav class="navbar navbar-expand-lg border-bottom sticky-top bg-body">
-    <div class="container-fluid px-3">
-      <a class="navbar-brand fw-bold text-primary d-flex align-items-center gap-2" href="{% url 'dashboard:index' %}">
-        <i class="bi bi-shield-lock-fill"></i> Painel de Gestão
-      </a>
+  <!-- Top Dashboard Navbar -->
+  <header class="dash-header">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid px-3">
+        <a class="dash-brand" href="{% url 'dashboard:index' %}">
+          <i class="bi bi-terminal-split dash-icon"></i>
+          <span>// GESTAO_CORE</span>
+        </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler border-0 p-1 text-muted d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#dashNav" aria-controls="dashNav" aria-expanded="false" aria-label="Menu">
+          <i class="bi bi-list fs-4"></i>
+        </button>
 
-      <div class="collapse navbar-collapse" id="topNav">
-        <ul class="navbar-nav ms-auto align-items-center gap-2">
-          <li class="nav-item">
-            <a class="nav-link text-body" href="{% url 'blog:home' %}" target="_blank" rel="noopener noreferrer">
-              <i class="bi bi-box-arrow-up-right"></i> Ver Site
-            </a>
-          </li>
-
-          {% if request.user.is_authenticated %}
-            <li class="nav-item d-flex align-items-center gap-2 px-2">
-              <span class="badge text-bg-success"><i class="bi bi-shield-check"></i> 2FA Ativo</span>
-              <span class="small text-muted">{{ request.user.username }}</span>
-            </li>
+        <div class="collapse navbar-collapse" id="dashNav">
+          <ul class="navbar-nav ms-auto align-items-center gap-2">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'dashboard:password_change' %}" title="Alterar Senha">
-                <i class="bi bi-key"></i>
+              <a class="nav-link text-body font-monospace small" href="{% url 'blog:home' %}" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-box-arrow-up-right me-1"></i> [ver site]
               </a>
             </li>
+
+            {% if request.user.is_authenticated %}
+              <li class="nav-item d-flex align-items-center gap-2 px-2">
+                <span class="dash-badge dash-badge-success"><i class="bi bi-shield-check"></i> 2FA_OK</span>
+                <span class="font-monospace small text-muted">{{ request.user.username }}</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard:password_change' %}" title="Alterar Senha">
+                  <i class="bi bi-key"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <form method="post" action="{% url 'dashboard:logout' %}" class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-terminal-danger py-1 px-2" title="Encerrar Sessão">
+                    <i class="bi bi-box-arrow-right"></i> Sair
+                  </button>
+                </form>
+              </li>
+            {% endif %}
+
             <li class="nav-item">
-              <form method="post" action="{% url 'dashboard:logout' %}" class="d-inline">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-outline-danger" title="Encerrar Sessão">
-                  <i class="bi bi-box-arrow-right"></i> Sair
-                </button>
-              </form>
+              <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Alternar tema">
+                <i class="bi bi-moon-stars" id="theme-icon"></i>
+              </button>
             </li>
-          {% endif %}
-
-          <li class="nav-item">
-            <button class="btn btn-sm btn-outline-secondary" id="theme-toggle" type="button" aria-label="Alternar tema">
-              <i class="bi bi-moon-stars" id="theme-icon"></i>
-            </button>
-          </li>
-        </ul>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
-  <!-- Body with Sidebar -->
+  <!-- Body with Sidebar and Main Area -->
   <div class="container-fluid flex-grow-1">
     <div class="row">
       <!-- Sidebar -->
-      <nav class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar p-3" aria-label="Menu do Painel">
+      <nav class="col-md-3 col-lg-2 d-md-block dash-sidebar p-3" aria-label="Menu do Painel">
         <div class="position-sticky">
+          <div class="font-monospace small text-muted mb-3 pb-2 border-bottom border-secondary border-opacity-25">
+            // NAVEGACAO
+          </div>
           <ul class="nav flex-column gap-1">
             <li class="nav-item">
-              <a class="nav-link text-body d-flex align-items-center gap-2 {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'dashboard:index' %}">
+              <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'dashboard:index' %}">
                 <i class="bi bi-speedometer2"></i> Visão Geral
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-body d-flex align-items-center gap-2 {% if 'post' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:post_create' %}">
+              <a class="nav-link {% if 'post' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:post_create' %}">
                 <i class="bi bi-file-earmark-plus"></i> Novo Artigo
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-body d-flex align-items-center gap-2 {% if 'tag' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:tag_list' %}">
+              <a class="nav-link {% if 'tag' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:tag_list' %}">
                 <i class="bi bi-tags"></i> Tags
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-body d-flex align-items-center gap-2 {% if 'media' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:media_list' %}">
+              <a class="nav-link {% if 'media' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:media_list' %}">
                 <i class="bi bi-images"></i> Mídia
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-body d-flex align-items-center gap-2 {% if 'config' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:site_config' %}">
+              <a class="nav-link {% if 'config' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:site_config' %}">
                 <i class="bi bi-sliders"></i> Configurações
               </a>
             </li>
@@ -122,11 +120,11 @@
       </nav>
 
       <!-- Main Content -->
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+      <main class="col-md-9 ms-sm-auto col-lg-10 dash-main">
         <!-- Messages -->
         {% if messages %}
           {% for message in messages %}
-            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+            <div class="dash-alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
               {{ message }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
             </div>
