@@ -8,7 +8,7 @@ gunicorn~=23.0
 whitenoise~=6.8
 
 # PostgreSQL driver (psycopg3 — recommended for Django 6.x)
-psycopg[binary]~=3.2
+psycopg[binary]~=3.3
 
 # Cache & Sessions (Upstash Redis)
 redis~=5.2
