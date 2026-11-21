@@ -17,7 +17,7 @@
 #   make shell        — open a Django shell inside the web container
 # =============================================================================
 
-.PHONY: help run test lint up down migrate test-docker logs shell build
+.PHONY: help run test lint up down migrate test-docker logs shell build seed seed-docker
 
 help:
 	@echo ""
@@ -27,11 +27,13 @@ help:
 	@echo "    run          Start the Django dev server (SQLite)"
 	@echo "    test         Run pytest locally"
 	@echo "    lint         Ruff lint + format check"
+	@echo "    seed         Populate database with demo articles and config"
 	@echo ""
 	@echo "  With Docker:"
 	@echo "    up           Build and start all containers"
 	@echo "    down         Stop containers and remove volumes"
 	@echo "    migrate      Run Django migrations inside the web container"
+	@echo "    seed-docker  Populate database inside the web container"
 	@echo "    test-docker  Run pytest inside the web container (coverage >= 80%)"
 	@echo "    logs         Tail logs from all containers"
 	@echo "    shell        Open a Django shell inside the web container"
@@ -51,6 +53,9 @@ lint:
 	ruff check .
 	ruff format --check .
 
+seed:
+	python manage.py seed_demo
+
 # ---------------------------------------------------------------------------
 # Docker targets
 # ---------------------------------------------------------------------------
@@ -62,6 +67,9 @@ down:
 
 migrate:
 	docker compose exec web python manage.py migrate
+
+seed-docker:
+	docker compose exec web python manage.py seed_demo
 
 test-docker:
 	@echo "Starting db and redis..."

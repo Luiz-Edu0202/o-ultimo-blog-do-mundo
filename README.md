@@ -1,257 +1,288 @@
 # O Último Blog do Mundo
 
 > Blog pessoal de artigos técnicos + projeto de portfólio DevOps/Back-end.
+> Construído com foco em resiliência, segurança, tipografia de alta densidade técnica e deploy em nuvem com **custo zero absoluto**.
 
-[![CI](https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo/actions/workflows/ci.yml/badge.svg)](https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo/actions/workflows/ci.yml/badge.svg)](https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo/actions/workflows/ci.yml)
+[![Keep-Alive](https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo/actions/workflows/keep_alive.yml/badge.svg)](https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo/actions/workflows/keep_alive.yml)
+[![Backup Routine](https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo/actions/workflows/backup.yml/badge.svg)](https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo/actions/workflows/backup.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-blue?logo=python)](https://www.python.org/)
+[![Django 6.1](https://img.shields.io/badge/Django-6.1-green?logo=django)](https://www.djangoproject.com/)
+[![Docker Multi-Stage](https://img.shields.io/badge/Docker-Multi--Stage-2496ED?logo=docker)](Dockerfile)
 
-## 📋 Sobre o projeto
+---
 
-**O Último Blog do Mundo** é o blog pessoal de Luiz Eduardo Araujo Brayner, com dois objetivos:
+## 📋 Sobre o Projeto
 
-1. **Blog real** de artigos técnicos escritos em Markdown.
-2. **Projeto de portfólio** para vagas de DevOps/Back-end, demonstrando Docker, CI/CD, segurança, testes e deploy em nuvem com custo zero.
+**O Último Blog do Mundo** é o blog pessoal de Luiz Eduardo Araujo Brayner com dois propósitos complementares:
 
-## 🛠️ Stack
+1. **Blog real** de engenharia de software e artigos técnicos escritos em Markdown, com interface bilíngue (Português e Inglês) e realce de sintaxe avançado.
+2. **Projeto de portfólio para vagas de DevOps e Back-end sênior**, demonstrando arquitetura em camadas, Docker multi-stage, pipeline CI/CD completo, scans de vulnerabilidade automatizados, autenticação reforçada com 2FA TOTP e deploy automático em infraestrutura de nuvem moderna com **custo zero permanente**.
 
-| Camada | Tecnologia |
-|--------|-----------|
-| Linguagem/Framework | Python 3.12 + Django 6.1.x |
-| Banco de dados | SQLite (dev local) / PostgreSQL 16 (prod via Supabase) |
-| Cache/Sessões | Redis 7 (Upstash em prod) |
-| Mídia | Supabase Storage (S3-compatível) |
-| Servidor WSGI | Gunicorn |
-| Estáticos | WhiteNoise |
-| Front-end | Bootstrap 5.3, crispy-forms |
-| Qualidade | Ruff, pytest, pre-commit |
-| CI/CD | GitHub Actions, Docker, GHCR |
-| Deploy | Render (free tier) |
+---
 
-### Decisões técnicas
+## 🏛️ Arquitetura do Sistema
 
-- **Django 6.1.x** (última estável, nov/2026) em vez do 5.x original da spec — suporte ativo de segurança até ~2028, stack atualizada para portfólio.
-- **psycopg3** (`psycopg[binary]`) como driver PostgreSQL — recomendado pelo Django 6.x, melhor performance e tipagem.
-- **Sem Django admin** — dashboard customizado em URL secreta para demonstrar skills de front-end e segurança.
-- **Sem Kubernetes** — foco em demonstrar Docker + CI/CD + deploy simples; orquestração será projeto separado.
+```mermaid
+flowchart TD
+    subgraph Client["Cliente / Navegador"]
+        Browser["Navegador Web (HTTPS)"]
+    end
 
-### 🎨 Identidade visual & Design System
+    subgraph CDN_Host["Ponto de Entrada & Hospedagem"]
+        Render["Render Web Service (Free Tier)\nContainer Docker Linux (Appuser)"]
+        Gunicorn["Gunicorn WSGI (Workers)"]
+        WhiteNoise["WhiteNoise (Arquivos Estáticos Locais)"]
+    end
 
-O projeto adota uma estética **Cyberpunk Suave / Terminal Retrô-Futurista**, concebida para transmitir o conceito de *"O Último Blog do Mundo"* como uma transmissão técnica e resiliente num futuro hiper-digital:
+    subgraph Data_Services["Serviços em Nuvem (Custo Zero)"]
+        SupabaseDB[("Supabase PostgreSQL 16\nPooler PgBouncer")]
+        SupabaseS3[("Supabase Storage\nBucket S3 Público (Imagens/Mídia)")]
+        UpstashRedis[("Upstash Redis 7\nCache L1 & Sessões 8h")]
+    end
 
-- **Tipografia**: Space Grotesk (títulos e display), Inter (corpo editorial de alta legibilidade) e JetBrains Mono (código, metadados e elementos CLI), todas servidas localmente em formato WOFF2.
-- **Paleta de Cores**:
-  - **Tema Escuro (Padrão)**: Fundo `#0A0C10`, superfícies `#12151C`, acento ciano fosforescente `#00E5CC`.
-  - **Tema Claro**: Fundo `#F5F6F8`, superfícies `#FFFFFF`, acento `#009E8F` calibrado para alto contraste WCAG AA.
-- **Micro-identidade Terminal**: Logo com cursor piscante `█`, metadados em estilo log `[2026.11.20] // 5 MIN READ`, tags em formato bracketed `[ docker ]`, páginas 404/500 com ASCII art e rodapé simulando prompt de shell Unix (`luiz@terminal:~blog$`).
-- **Mobile-First**: Menu offcanvas terminal dedicado, áreas de toque mínimas de 44px e escala tipográfica responsiva com `clamp()`.
+    subgraph DevOps_Automation["Pipeline CI/CD (GitHub Actions)"]
+        GA_Lint["Job: Lint & Format (Ruff)"]
+        GA_Test["Job: Testes (pytest + coverage >= 80%)\nPostgreSQL + Redis Services"]
+        GA_Sec["Job: Segurança (pip-audit + Trivy)"]
+        GA_Build["Job: Buildx Multi-Stage & Push GHCR"]
+        GA_Deploy["Job: Deploy Hook Automático (Main)"]
+        GHCR[("GitHub Container Registry\nghcr.io")]
+    end
 
-## 📁 Estrutura do projeto
+    Browser -->|HTTPS / HSTS / CSP| Render
+    Render --> Gunicorn
+    Gunicorn --> WhiteNoise
+    Gunicorn -->|psycopg3 pooler| SupabaseDB
+    Gunicorn -->|django-storages boto3| SupabaseS3
+    Gunicorn -->|django-redis| UpstashRedis
 
-```
-o-ultimo-blog-do-mundo/
-├── config/                    # Configuração Django
-│   ├── settings/
-│   │   ├── base.py            # Settings compartilhados
-│   │   ├── local.py           # Dev: SQLite, DEBUG=True
-│   │   └── production.py      # Prod: Postgres, Redis, HTTPS
-│   ├── urls.py                # URL root
-│   ├── wsgi.py
-│   └── asgi.py
-├── apps/
-│   ├── core/                  # SiteConfig, healthcheck, utils
-│   ├── blog/                  # Posts, tags, views públicas
-│   ├── dashboard/             # Painel admin customizado
-│   └── accounts/              # Gestão de usuário admin
-├── templates/                 # Templates globais
-├── static/                    # Arquivos estáticos
-├── locale/{pt_BR,en}/         # Arquivos de tradução
-├── tests/                     # Testes do projeto
-├── requirements/
-│   ├── base.txt               # Deps compartilhadas
-│   ├── local.txt              # Deps de dev
-│   └── production.txt         # Deps de produção
-├── docs/                      # Documentação operacional
-│   └── backup_restore.md      # Backup, restore e rollback
-├── pyproject.toml             # Ruff, pytest, coverage config
-├── .pre-commit-config.yaml    # Pre-commit hooks
-├── .github/
-│   ├── workflows/
-│   │   ├── ci.yml             # Pipeline CI/CD
-│   │   ├── keep_alive.yml     # Ping periódico (Render + Supabase)
-│   │   └── backup.yml         # Backup semanal do banco
-│   └── dependabot.yml         # Atualização automática de deps
-├── .env.example               # Variáveis de ambiente (template)
-└── backups/                   # Backups locais (ignorado no Git)
-```
-
-## 🚀 Como rodar localmente
-
-### Pré-requisitos
-
-- Python 3.12+
-- Git
-
-### Setup
-
-```bash
-# Clonar o repositório
-git clone https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo.git
-cd o-ultimo-blog-do-mundo
-
-# Criar e ativar virtualenv
-python3 -m venv .venv
-source .venv/bin/activate  # Linux/Mac
-# .venv\Scripts\activate   # Windows
-
-# Instalar dependências de desenvolvimento
-pip install -r requirements/local.txt
-
-# Configurar variáveis de ambiente
-cp .env.example .env
-# Editar .env conforme necessário (os defaults funcionam para dev)
-
-# Rodar migrações (ainda sem modelos customizados no M1)
-python manage.py migrate
-
-# Verificar que tudo funciona
-python manage.py check
-```
-
-### Verificar o healthcheck
-
-```bash
-python manage.py runserver
-# Acessar http://localhost:8000/healthz — retorna JSON com status do banco e cache:
-# {"status": "ok", "checks": {"db": "ok", "cache": "ok"}}
-```
-
-## 🐳 Rodando com Docker
-
-### Pré-requisitos
-
-- Docker 24+ e Docker Compose v2
-
-### Setup
-
-```bash
-# Copie o .env e ajuste as variáveis (os defaults já funcionam para o compose local)
-cp .env.example .env
-
-# Suba todos os serviços (web + PostgreSQL + Redis)
-docker compose up --build
-
-# Em outro terminal: aplique as migrações
-docker compose exec web python manage.py migrate
-
-# Acesse:
-# http://localhost:8000        — site público
-# http://localhost:8000/healthz — healthcheck (retorna JSON com status de DB e Redis)
-```
-
-### Comandos úteis
-
-```bash
-# Parar containers e remover volumes
-docker compose down -v
-
-# Rodar testes dentro do container
-docker compose run --rm web pytest --cov --cov-report=term-missing
-
-# Criar superusuário
-docker compose exec web python manage.py createsuperuser
-
-# Ver logs
-docker compose logs -f web
-
-# Usar o Makefile (atalhos)
-make up          # docker compose up --build
-make down        # docker compose down -v
-make migrate     # migrações dentro do container
-make test-docker # testes dentro do container
-make shell       # Django shell dentro do container
-```
-
-### Variáveis do Compose
-
-As variáveis `DATABASE_URL` e `REDIS_URL` são injetadas automaticamente pelo `docker-compose.yml` apontando para os containers internos. Para personalizar o banco local, edite no `.env`:
-
-```
-POSTGRES_DB=blog
-POSTGRES_USER=blog
-POSTGRES_PASSWORD=blog
+    DevOps_Automation -->|Push / Merge Main| GHCR
+    GA_Build --> GHCR
+    GA_Deploy -->|Trigger Webhook| Render
 ```
 
 ---
 
-## ✅ Qualidade de código
+## 📸 Demonstração Visual & Screenshots
 
-```bash
-# Lint
-ruff check .
+O blog conta com uma identidade visual **Cyberpunk Suave / Terminal Retrô-Futurista** com tipografia de alta precisão servida localmente e responsividade total:
 
-# Format check
-ruff format --check .
+| Tela | Captura |
+|---|---|
+| **Home (Desktop Dark)** | ![Home](docs/screenshots/01_home_dark.png) |
+| **Leitura do Artigo (Tipografia & Syntax Highlight)** | ![Artigo](docs/screenshots/02_post_detail_dark.png) |
+| **Sobre o Autor** | ![Sobre](docs/screenshots/03_about_dark.png) |
+| **Página 404 (ASCII Terminal)** | ![404](docs/screenshots/04_404_terminal.png) |
+| **Painel de Gestão (Login 2FA)** | ![Login](docs/screenshots/05_dashboard_login.png) |
+| **Mobile (iPhone 14 Viewport)** | ![Mobile](docs/screenshots/06_mobile_home_dark.png) |
 
-# Testes com cobertura
-pytest --cov --cov-report=term-missing
+---
 
-# Instalar pre-commit hooks (uma vez)
-pre-commit install
+## 🛠️ Stack Tecnológica & Decisões Técnicas
 
-# Rodar pre-commit em todos os arquivos
-pre-commit run --all-files
+| Camada | Tecnologia | Justificativa Técnica |
+|---|---|---|
+| **Linguagem & Framework** | Python 3.12 + Django 6.1.x | Framework maduro com ORM robusto, i18n nativo de primeira classe e excelente modelo de segurança. |
+| **Driver PostgreSQL** | `psycopg[binary]` (psycopg3) | Driver oficial recomendado pelo Django 6.x com melhor suporte a tipagem e pooling nativo. |
+| **Banco de Dados** | SQLite (Dev local) / PostgreSQL 16 (Prod) | SQLite local zero-setup; PostgreSQL 16 gerenciado no Supabase com PgBouncer connection pooler. |
+| **Cache & Sessões** | Redis 7 (Upstash em prod) | Cache distribuído de alto desempenho e sessões isoladas com expiração segura de 8 horas. |
+| **Armazenamento de Mídia** | Supabase Storage (S3 API) | Uploads de capas e mídia armazenados em bucket S3-compatível (`django-storages[s3]` + `boto3`). |
+| **Servidor WSGI** | Gunicorn | Servidor UNIX padrão de mercado, estável e leve para ambientes containerizados. |
+| **Arquivos Estáticos** | WhiteNoise | Serve arquivos estáticos com compressão Brotli/Gzip e hash de cache busting sem precisar de Nginx dedicado. |
+| **Design System** | Space Grotesk + Inter + JetBrains Mono | Tipografia servida localmente (WOFF2) em tema claro/escuro nativo com tokens CSS e WCAG AA. |
+| **Markdown & Sanitização** | Python-Markdown + Pygments + nh3 | Renderização rápida em cache com sanitização estrita via nh3 contra vulnerabilidades XSS. |
+| **Qualidade & Lint** | Ruff + pytest-django + pre-commit | Ruff executa lint e formatação em milissegundos; pytest garante cobertura mínima de 80%. |
+| **CI/CD** | GitHub Actions + GHCR | Pipeline com testes contra bancos reais, scans de vulnerabilidade (Trivy + pip-audit) e deploy automático. |
+| **Deploy** | Render Web Service (Free Tier) | Deploy direto do Dockerfile multi-stage com disparo via webhook seguro. |
+
+### Decisões Arquiteturais Fundamentais
+
+- **Por que sem Django admin tradicional?**  
+  O Django admin exposto é alvo frequente de scanners automatizados. O projeto substitui o admin padrão por um **painel customizado em rota secreta configurável** (`ADMIN_PATH`), protegido por **Argon2**, bloqueio de IP por força bruta (`django-axes`) e **2FA TOTP obrigatório**.
+- **Por que sem Kubernetes neste projeto?**  
+  Para o porte e perfil de tráfego de um blog pessoal, Kubernetes representaria complexidade acidental e custos de infraestrutura incompatíveis com a premissa de custo zero. A containerização via Dockerfile multi-stage + Compose local oferece portabilidade idêntica com footprint mínimo.
+- **Por que fontes locais (WOFF2)?**  
+  As fontes *Space Grotesk*, *Inter* e *JetBrains Mono* são servidas a partir de `static/fonts/`, garantindo independência de CDNs externas, conformidade com políticas restritivas de Content Security Policy (CSP) e carregamento sem latência de rede externa.
+
+---
+
+## 📁 Estrutura de Pastas
+
+```
+o-ultimo-blog-do-mundo/
+├── config/                    # Configurações do projeto
+│   ├── settings/
+│   │   ├── base.py            # Configurações compartilhadas
+│   │   ├── local.py           # Ambiente de dev (SQLite, DEBUG=True)
+│   │   └── production.py      # Produção (Postgres, Redis, SSL/HSTS, CSP)
+│   ├── urls.py                # Mapeamento raiz de URLs
+│   ├── wsgi.py
+│   └── asgi.py
+├── apps/                      # Aplicações Django modulares
+│   ├── core/                  # SiteConfig (singleton), healthcheck, views institucionais
+│   ├── blog/                  # Modelos Post/Tag, feed RSS, sitemap, seed_demo
+│   ├── dashboard/             # Painel customizado, 2FA TOTP, CRUDs de posts/tags/mídia
+│   └── accounts/              # Gestão mínima de contas de operador
+├── templates/                 # Templates HTML semânticos
+├── static/                    # Arquivos estáticos (CSS modular, fontes locais WOFF2)
+│   ├── css/                   # Design system modular (tokens, base, components, responsive)
+│   └── fonts/                 # Space Grotesk, Inter, JetBrains Mono
+├── locale/{pt_BR,en}/         # Arquivos de tradução (.po / .mo)
+├── tests/                     # Suíte de testes automatizados (104 testes, 92.7% cobertura)
+├── scripts/                   # Scripts utilitários (ex: take_screenshots.py)
+├── docs/                      # Documentação operacional e screenshots
+│   ├── backup_restore.md      # Procedimentos de backup, restauração e rollback
+│   └── screenshots/           # Capturas de tela da aplicação
+├── requirements/
+│   ├── base.txt               # Dependências comuns
+│   ├── local.txt              # Dependências de desenvolvimento
+│   └── production.txt         # Dependências de produção
+├── Dockerfile                 # Multi-stage build (builder -> final)
+├── docker-compose.yml         # Ambiente local completo (web + postgres:16 + redis:7)
+├── Makefile                   # Atalhos convenientes para desenvolvimento
+├── pyproject.toml             # Configuração centralizada (Ruff, pytest, coverage)
+└── .github/workflows/         # Pipelines CI/CD (ci.yml, keep_alive.yml, backup.yml)
 ```
 
-## 🔄 Pipeline CI/CD
+---
 
-O GitHub Actions executa em push/PR para `main`:
+## 🚀 Como Rodar Localmente
 
-1. **lint** — Ruff check + format check
-2. **test** — pytest com cobertura ≥ 80% (com PostgreSQL e Redis via services)
-3. **security** — pip-audit + Trivy filesystem scan
-4. **build** — Docker Buildx → push GHCR (`:sha` + `:latest`) → Trivy scan da imagem
-5. **deploy** — Render deploy hook (dispara redeploy automático)
+### Opção 1: Sem Docker (SQLite Local)
 
-### Workflows adicionais
+```bash
+# 1. Clonar o repositório
+git clone https://github.com/Luiz-Edu0202/o-ultimo-blog-do-mundo.git
+cd o-ultimo-blog-do-mundo
 
-- **keep_alive** — cron a cada 3 h: pinga `https://o-ultimo-blog-do-mundo.onrender.com/healthz` para evitar dormência do Render e inatividade do Supabase.
-- **backup** — cron semanal: executa `pg_dump` do Supabase e faz upload do artefato para o GitHub Actions.
+# 2. Criar e ativar virtualenv
+python3 -m venv .venv
+source .venv/bin/activate  # No Windows: .venv\Scripts\activate
 
-## 🚀 Produção — Supabase, Upstash & Render
+# 3. Instalar dependências de desenvolvimento
+pip install -r requirements/local.txt
 
-### Serviços utilizados (todos free tier)
+# 4. Configurar variáveis de ambiente
+cp .env.example .env
 
-| Serviço | Função | Variáveis de ambiente |
-|---------|--------|-----------------------|
-| **Supabase** | PostgreSQL 16 + Storage S3 | `DATABASE_URL`, `SUPABASE_S3_ENDPOINT`, `SUPABASE_S3_ACCESS_KEY`, `SUPABASE_S3_SECRET_KEY`, `SUPABASE_STORAGE_BUCKET` |
-| **Upstash** | Redis 7 (cache + sessões) | `REDIS_URL` |
-| **Render** | Web Service (Docker) | `RENDER_DEPLOY_HOOK_URL` (GitHub Secret) |
+# 5. Executar migrações e popular dados de exemplo
+python manage.py migrate
+python manage.py seed_demo  # Cria artigos, tags e SiteConfig realistas
 
-### Como fazer deploy
+# 6. Iniciar o servidor
+python manage.py runserver
+# Acesse: http://localhost:8000/
+# Healthcheck: http://localhost:8000/healthz
+```
 
-1. Crie os serviços no Supabase, Upstash e Render (todos free tier).
-2. No painel do **Render**, configure como Web Service apontando para o repositório GitHub ou use o deploy hook.
-3. Configure as variáveis de ambiente no Render (veja `.env.example` para a lista completa).
-4. Adicione `RENDER_DEPLOY_HOOK_URL` como secret no GitHub Actions.
-5. A cada push na `main`, o CI faz build → push GHCR → dispara deploy no Render.
+### Opção 2: Com Docker Compose (PostgreSQL 16 + Redis 7)
 
-### Backup, restore e rollback
+```bash
+# 1. Configurar variáveis de ambiente
+cp .env.example .env
 
-Veja a documentação completa em [`docs/backup_restore.md`](docs/backup_restore.md).
+# 2. Subir os containers (Web + Postgres + Redis)
+make up
+# ou: docker compose up --build
 
-## 📌 Variáveis de ambiente
+# 3. Em outro terminal, aplicar migrações e dados de demonstração
+make migrate
+make seed-docker
 
-Veja o arquivo [`.env.example`](.env.example) para a lista completa com documentação.
+# 4. Criar superusuário administrativo
+docker compose exec web python manage.py createsuperuser
 
-## 🗺️ Roadmap (Milestones)
+# Acesse:
+# http://localhost:8000/           — Blog público
+# http://localhost:8000/healthz   — Healthcheck JSON (DB + Redis ok)
+```
 
-- [x] **M1 — Fundação**: estrutura, settings, CI esqueleto
-- [x] **M2 — Domínio público**: modelos, i18n, Markdown, views, SEO
-- [x] **M3 — Dashboard**: login, 2FA, CRUD, preview
-- [x] **M4 — Docker**: Dockerfile multi-stage, compose, healthcheck, CI build
-- [x] **M5 — Produção**: Supabase, Upstash, Render, CI completo
-- [x] **M6 — Identidade visual & Mobile**: tipografia, paleta de cores, tema claro/escuro refinado, front-end responsivo para celulares
-- [ ] **M7 — Polimento**: acessibilidade (WCAG AA), testes finais, screenshots, README completo, release v1.0.0
+### Atalhos Úteis do Makefile
+
+| Comando | Descrição |
+|---|---|
+| `make run` | Inicia o servidor local de desenvolvimento (SQLite) |
+| `make test` | Executa pytest com verificação de cobertura (mín. 80%) |
+| `make lint` | Executa Ruff linter e checagem de formatação |
+| `make seed` | Popula o banco local com artigos e dados de teste |
+| `make up` | Constrói e inicia todos os containers Docker |
+| `make down` | Para os containers e limpa os volumes |
+| `make test-docker` | Executa a suíte de testes dentro do container Docker |
+
+---
+
+## 🔒 Segurança Implementada
+
+O projeto foi submetido a uma rigorosa política de segurança:
+
+- **Autenticação Reforçada**: Hasher primário **Argon2** (`argon2-cffi`); senhas não são armazenadas em formatos vulneráveis a GPU.
+- **Autenticação em Duas Etapas (2FA TOTP)**: Obrigatória para acesso ao painel de gestão (`django-otp` + `qrcode`).
+- **Defesa Contra Força Bruta**: `django-axes` monitora tentativas repetidas de login inválido e bloqueia temporariamente por IP.
+- **Sem Django Admin**: Rota `/admin/` inexistente no roteador de URLs; acesso exclusivo via `ADMIN_PATH` secreto.
+- **Headers de Produção**:
+  - `SECURE_SSL_REDIRECT = True` (HTTPS obrigatório)
+  - `SECURE_HSTS_SECONDS = 31536000` (HSTS com subdomínios e preload)
+  - `SESSION_COOKIE_SECURE = True`, `SESSION_COOKIE_HTTPONLY = True`, `SESSION_COOKIE_SAMESITE = "Lax"`
+  - `CSRF_COOKIE_SECURE = True`, `CSRF_COOKIE_HTTPONLY = True`
+  - `X_FRAME_OPTIONS = "DENY"` (Proteção contra clickjacking)
+  - `SECURE_REFERRER_POLICY = "same-origin"`
+- **Sanitização de Conteúdo**: Todo HTML resultante de Markdown passa pela biblioteca **`nh3`**, permitindo apenas tags e atributos seguros e eliminando vetores de XSS.
+- **Varredura Automatizada no CI**:
+  - `pip-audit` audita dependências contra bancos de CVEs conhecidas.
+  - **Trivy** analisa o sistema de arquivos e a imagem Docker construída antes do push.
+
+---
+
+## ⚠️ Limitações Conhecidas (Free Tiers) & Mitigações
+
+Operar infraestrutura em nuvem moderna com **custo zero permanente** impõe restrições operacionais conhecidas dos provedores gratuitos:
+
+1. **Spin-down do Render Free Tier**:
+   - *Limitação*: O container entra em estado de dormência após 15 minutos sem requisições HTTP; a primeira requisição subsequente pode demorar ~45 segundos para responder (cold start).
+   - *Mitigação*: Workflow agendado `.github/workflows/keep_alive.yml` executa um ping a cada 3 horas para minimizar a dormência em horários de pico.
+2. **Pausa por Inatividade do Supabase Free Tier**:
+   - *Limitação*: Projetos gratuitos no Supabase são pausados após 7 dias contínuos sem comandos de escrita.
+   - *Mitigação*: O workflow `keep_alive.yml` e a rotina semanal de backup (`backup.yml`) garantem consultas ativas ao banco.
+3. **Persistência de Mídia no Free Tier**:
+   - *Limitação*: O disco local do container no Render é efêmero (reinicializações descartam o filesystem).
+   - *Solução Arquitetural*: Nenhuma mídia é gravada localmente em produção; todos os uploads são enviados diretamente para o bucket S3 do Supabase Storage.
+
+---
+
+## 🔄 Rotinas de Operação, Backup e Rollback
+
+Para instruções detalhadas de:
+- Backup semanal e exportação de dumps com `pg_dump`;
+- Restauração de desastre com `pg_restore`;
+- Exportação de arquivos do Supabase Storage;
+- Rollback para imagens e tags anteriores no Render;
+
+Consulte o manual operacional em [`docs/backup_restore.md`](docs/backup_restore.md).
+
+---
+
+## 🗺️ Roadmap Futuro
+
+- [ ] **Orquestração em Kubernetes**: Implantação em cluster bare-metal / k3s com Helm charts e GitOps via ArgoCD (projeto separado).
+- [ ] **Stack de Observabilidade**: Exportador de métricas Prometheus, dashboards em Grafana e agregação de logs com Loki.
+- [ ] **CDN de Borda**: Configuração de zona Cloudflare com cache de HTML dinâmico em edge workers.
+
+---
+
+## 🗺️ Status dos Milestones
+
+- [x] **M1 — Fundação**: Estrutura modular, settings em camadas, CI esqueleto, Ruff e pre-commit
+- [x] **M2 — Domínio Público**: Modelos Post/Tag, i18n bilíngue, Markdown sanitizado, busca, RSS, sitemap e SEO
+- [x] **M3 — Dashboard**: Rota secreta, autenticação 2FA TOTP, bloqueio com django-axes, CRUDs de posts/tags/mídia
+- [x] **M4 — Docker**: Dockerfile multi-stage, docker-compose local, healthcheck /healthz e Makefile
+- [x] **M5 — Produção**: Supabase Postgres + S3, Upstash Redis, deploy automatizado no Render e keep-alive
+- [x] **M6 — Identidade Visual & Mobile**: Tipografia Space Grotesk/Inter/Mono, paleta terminal retrô-futurista, offcanvas mobile
+- [x] **M7 — Polimento**: Acessibilidade WCAG AA (reduced motion, contraste, focus ring), testes finais (104 testes), screenshots e release v1.0.0
+
+---
 
 ## 📄 Licença
 
-MIT — veja [LICENSE](LICENSE).
+Distribuído sob licença MIT. Veja [`LICENSE`](LICENSE) para mais detalhes.
