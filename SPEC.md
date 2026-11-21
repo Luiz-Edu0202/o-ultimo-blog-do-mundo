@@ -1,3 +1,7 @@
+# SPEC.md — Especificação Técnica do Produto
+
+> [English Version](SPEC.en.md) | **Português**
+
 ## 0. Instruções para o agente
 
 - Este documento é a **especificação oficial** do projeto **O Último Blog do Mundo**. Não implemente nada fora do escopo sem perguntar.
