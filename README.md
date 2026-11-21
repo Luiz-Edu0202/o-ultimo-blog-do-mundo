@@ -23,7 +23,7 @@ Criei este projeto com dois propósitos complementares:
 1. **Meu Espaço Pessoal**: Um blog para publicar qualquer coisa que eu tiver vontade de compartilhar — pensamentos, ideias, reflexões, notas de livros, experiências do cotidiano e também artigos técnicos.
 2. **Portfólio Prático de DevOps & Back-end**: Demonstrar na prática a construção de uma aplicação resiliente e segura, com Docker multi-stage, pipeline CI/CD automatizado, testes rigorosos (cobertura acima de 90%), autenticação 2FA TOTP e deploy em nuvem operando com **custo zero absoluto**.
 
-Desenvolvido por **[Luiz](https://github.com/Luiz-Edu0202)** ([LinkedIn](https://linkedin.com/in/luizbrayner)).
+Desenvolvido por **[Luiz](https://github.com/Luiz-Edu0202)** ([LinkedIn](https://www.linkedin.com/in/luiz-edu0202/)).
 
 ---
 
