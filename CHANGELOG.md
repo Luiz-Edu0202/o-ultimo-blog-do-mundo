@@ -5,6 +5,24 @@ Todas as mudanças notáveis do projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.0.0] - 2026-11-20
+
+### Adicionado (Milestone 7 — Polimento & Lançamento Geral v1.0.0)
+
+- **Acessibilidade e Usabilidade (WCAG AA)**:
+  - Suporte completo a `@media (prefers-reduced-motion: reduce)` em `static/css/base.css`, pausando a animação do cursor piscante e minimizando transições para usuários com sensibilidade vestibular.
+  - Indicador de foco por teclado (`:focus-visible`) aprimorado com anel de alto contraste e deslocamento (`outline-offset`).
+  - Árvore de landmarks semânticos HTML5 (`<header>`, `<nav>`, `<main>`, `<article>`, `<aside>`, `<footer>`) com `id="main-content"` e skip-link acessível.
+- **Ferramentas de Demonstração e Dados de Teste**:
+  - Comando Django customizado `python manage.py seed_demo` populando banco com `SiteConfig` realista, 7 tags técnicas e 4 artigos completos em Markdown com código, syntax highlighting e vínculos de tradução.
+  - Novos targets no `Makefile`: `make seed` (ambiente local) e `make seed-docker` (ambiente containerizado).
+  - Script automatizado de captura de screenshots em alta fidelidade (`scripts/take_screenshots.py`) gerando ativos para `docs/screenshots/` (Home, Detalhe, Sobre, 404 ASCII Terminal, Login Administrativo e Mobile Viewport).
+- **Documentação de Encerramento (Conforme Seção 13 do SPEC.md)**:
+  - `README.md` reescrito e expandido: diagrama de arquitetura em Mermaid, decisões técnicas completas, limitações de free tiers explicadas, matriz de segurança implementada vs fora de escopo, e galeria de screenshots.
+- **Testes & Qualidade**:
+  - Novos testes automatizados em `tests/test_polish.py` validando o comando `seed_demo`, suporte a reduced-motion, focus ring, ausência da rota padrão do Django admin e árvore de landmarks semânticos.
+  - Cobertura final de testes de **92.73%** (104 testes passando).
+
 ## [0.6.0] - 2026-11-20
 
 ### Adicionado (Milestone 6 — Identidade Visual & Mobile)
