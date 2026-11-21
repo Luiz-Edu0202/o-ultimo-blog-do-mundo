@@ -5,7 +5,7 @@
 gunicorn~=23.0
 
 # Static files
-whitenoise~=6.8
+whitenoise~=6.12
 
 # PostgreSQL driver (psycopg3 — recommended for Django 6.x)
 psycopg[binary]~=3.3
