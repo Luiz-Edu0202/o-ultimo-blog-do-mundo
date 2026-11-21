@@ -9,73 +9,77 @@
 <div class="row">
   <!-- Main posts column -->
   <div class="col-lg-8">
-    <div class="mb-4 pb-2 border-bottom">
-      <h1 class="display-6 fw-bold">
+    <div class="page-header">
+      <h1 class="h2 mb-1">
         {% if LANGUAGE_CODE == 'en' %}{{ site_config.site_title_en }}{% else %}{{ site_config.site_title_pt }}{% endif %}
       </h1>
-      <p class="lead text-muted">
-        {% if LANGUAGE_CODE == 'en' %}{{ site_config.tagline_en }}{% else %}{{ site_config.tagline_pt }}{% endif %}
+      <p class="page-subtitle mb-0">
+        // {% if LANGUAGE_CODE == 'en' %}{{ site_config.tagline_en }}{% else %}{{ site_config.tagline_pt }}{% endif %}
       </p>
     </div>
 
     {% if posts %}
       {% for post in posts %}
-        <article class="card mb-4 shadow-sm border-0 bg-body-tertiary">
+        <article class="post-card">
           {% if post.cover_image %}
-            <img src="{{ post.cover_image.url }}" class="card-img-top" alt="{{ post.title }}" style="max-height: 280px; object-fit: cover;">
+            <img src="{{ post.cover_image.url }}" class="post-cover" alt="{{ post.title }}" loading="lazy">
           {% endif %}
-          <div class="card-body">
-            <div class="d-flex align-items-center gap-2 mb-2 text-muted small">
-              <time datetime="{{ post.published_at|date:'c' }}">
-                <i class="bi bi-calendar3"></i> {{ post.published_at|date:"d M Y" }}
-              </time>
-              <span>&bull;</span>
-              <span><i class="bi bi-clock"></i> {{ post.reading_time }} min {% trans "de leitura" %}</span>
+
+          <div class="post-meta">
+            <time datetime="{{ post.published_at|date:'c' }}">
+              [{{ post.published_at|date:"Y.m.d" }}]
+            </time>
+            <span class="meta-separator">//</span>
+            <span>{{ post.reading_time }} MIN READ</span>
+            {% if post.translation_of or post.translations.exists %}
+              <span class="meta-separator">//</span>
+              <span class="text-uppercase">{{ post.get_language_display }}</span>
+            {% endif %}
+          </div>
+
+          <h2 class="post-title">
+            <a href="{{ post.get_absolute_url }}">
+              {{ post.title }}
+            </a>
+          </h2>
+
+          <p class="post-summary">
+            {{ post.summary|default:post.content_md|truncatewords:35 }}
+          </p>
+
+          <div class="post-footer">
+            <div class="d-flex flex-wrap gap-1">
+              {% for tag in post.tags.all %}
+                <a href="{{ tag.get_absolute_url }}" class="tag-badge">
+                  {{ tag.name }}
+                </a>
+              {% endfor %}
             </div>
-
-            <h2 class="card-title h4 mb-2">
-              <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-body">
-                {{ post.title }}
-              </a>
-            </h2>
-
-            <p class="card-text text-secondary">
-              {{ post.summary|default:post.content_md|truncatewords:40 }}
-            </p>
-
-            <div class="d-flex flex-wrap align-items-center justify-content-between mt-3">
-              <div class="d-flex flex-wrap gap-1">
-                {% for tag in post.tags.all %}
-                  <a href="{{ tag.get_absolute_url }}" class="badge text-bg-secondary text-decoration-none">
-                    #{{ tag.name }}
-                  </a>
-                {% endfor %}
-              </div>
-              <a href="{{ post.get_absolute_url }}" class="btn btn-sm btn-outline-primary" aria-label="{% trans 'Ler artigo' %}: {{ post.title }}">
-                {% trans "Ler artigo" %} &rarr;
-              </a>
-            </div>
+            <a href="{{ post.get_absolute_url }}" class="read-link" aria-label="{% trans 'Ler artigo' %}: {{ post.title }}">
+              <span>{% trans "Ler artigo" %}</span>
+              <span class="arrow">&rarr;</span>
+            </a>
           </div>
         </article>
       {% endfor %}
 
-      <!-- Pagination -->
+      <!-- Terminal Pagination -->
       {% if is_paginated %}
-        <nav aria-label="{% trans 'Navegação de páginas' %}" class="mt-4">
-          <ul class="pagination justify-content-center">
+        <nav aria-label="{% trans 'Navegação de páginas' %}">
+          <ul class="pagination-terminal">
             {% if page_obj.has_previous %}
               <li class="page-item">
                 <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="{% trans 'Anterior' %}">
-                  <span aria-hidden="true">&laquo;</span>
+                  &lt; prev
                 </a>
               </li>
             {% else %}
-              <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+              <li class="page-item disabled"><span class="page-link">&lt; prev</span></li>
             {% endif %}
 
             {% for num in paginator.page_range %}
               {% if page_obj.number == num %}
-                <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                <li class="page-item active" aria-current="page"><span class="page-link">[{{ num }}]</span></li>
               {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                 <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
               {% endif %}
@@ -84,52 +88,48 @@
             {% if page_obj.has_next %}
               <li class="page-item">
                 <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="{% trans 'Próximo' %}">
-                  <span aria-hidden="true">&raquo;</span>
+                  next &gt;
                 </a>
               </li>
             {% else %}
-              <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+              <li class="page-item disabled"><span class="page-link">next &gt;</span></li>
             {% endif %}
           </ul>
         </nav>
       {% endif %}
 
     {% else %}
-      <div class="alert alert-info" role="alert">
-        {% trans "Nenhum artigo publicado encontrado neste idioma." %}
+      <div class="alert-terminal" role="alert">
+        // {% trans "Nenhum artigo publicado encontrado neste idioma." %}
       </div>
     {% endif %}
   </div>
 
-  <!-- Sidebar -->
+  <!-- Terminal Sidebar -->
   <aside class="col-lg-4 mt-4 mt-lg-0" aria-label="{% trans 'Barra lateral' %}">
-    <div class="card bg-body-tertiary border-0 shadow-sm mb-4">
-      <div class="card-body">
-        <h3 class="h5 card-title fw-bold">{% trans "Sobre o autor" %}</h3>
-        <p class="card-text text-secondary small">
-          {% if LANGUAGE_CODE == 'en' %}
-            {{ site_config.about_en|default:site_config.about_pt|truncatewords:45 }}
-          {% else %}
-            {{ site_config.about_pt|default:site_config.about_en|truncatewords:45 }}
-          {% endif %}
-        </p>
-        <a href="{% url 'core:about' %}" class="btn btn-sm btn-outline-secondary">
-          {% trans "Saiba mais" %} &rarr;
-        </a>
-      </div>
+    <div class="sidebar-card">
+      <h3 class="sidebar-title">{% trans "Sobre o autor" %}</h3>
+      <p class="sidebar-text">
+        {% if LANGUAGE_CODE == 'en' %}
+          {{ site_config.about_en|default:site_config.about_pt|truncatewords:40 }}
+        {% else %}
+          {{ site_config.about_pt|default:site_config.about_en|truncatewords:40 }}
+        {% endif %}
+      </p>
+      <a href="{% url 'core:about' %}" class="sidebar-link">
+        &gt; {% trans "Saiba mais" %}
+      </a>
     </div>
 
     {% if all_tags %}
-      <div class="card bg-body-tertiary border-0 shadow-sm">
-        <div class="card-body">
-          <h3 class="h5 card-title fw-bold mb-3">{% trans "Tags" %}</h3>
-          <div class="d-flex flex-wrap gap-2">
-            {% for tag in all_tags %}
-              <a href="{{ tag.get_absolute_url }}" class="badge text-bg-light border text-decoration-none">
-                #{{ tag.name }}
-              </a>
-            {% endfor %}
-          </div>
+      <div class="sidebar-card">
+        <h3 class="sidebar-title">{% trans "Tags do sistema" %}</h3>
+        <div class="tags-cloud">
+          {% for tag in all_tags %}
+            <a href="{{ tag.get_absolute_url }}" class="tag-badge">
+              {{ tag.name }}
+            </a>
+          {% endfor %}
         </div>
       </div>
     {% endif %}
