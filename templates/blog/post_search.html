@@ -6,24 +6,25 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-9">
-    <div class="mb-4 pb-2 border-bottom">
-      <h1 class="display-6 fw-bold">
-        {% trans "Resultados para" %} <span class="text-primary">"{{ query }}"</span>
+    <div class="page-header">
+      <a href="{% url 'blog:home' %}" class="back-link">&larr; {% trans "Voltar para todos os artigos" %}</a>
+      <h1 class="h2 mb-1">
+        {% trans "Busca:" %} <span class="highlight">"{{ query }}"</span>
       </h1>
-      <p class="text-muted">
-        {% blocktrans count counter=posts|length %}
-          1 resultado encontrado
+      <p class="page-subtitle mb-0">
+        // {% blocktrans count counter=posts|length %}
+          1 resultado indexado
         {% plural %}
-          {{ counter }} resultados encontrados
+          {{ counter }} resultados indexados
         {% endblocktrans %}
       </p>
     </div>
 
     <!-- Search input -->
-    <form class="mb-4" method="get" action="{% url 'blog:post_search' %}">
+    <form class="search-form" method="get" action="{% url 'blog:post_search' %}">
       <div class="input-group">
         <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="{% trans 'Buscar artigos...' %}" required>
-        <button class="btn btn-primary" type="submit">
+        <button class="btn-search" type="submit">
           <i class="bi bi-search"></i> {% trans "Buscar" %}
         </button>
       </div>
@@ -31,46 +32,45 @@
 
     {% if posts %}
       {% for post in posts %}
-        <article class="card mb-3 shadow-sm border-0 bg-body-tertiary">
-          <div class="card-body">
-            <div class="d-flex align-items-center gap-2 mb-2 text-muted small">
-              <time datetime="{{ post.published_at|date:'c' }}">
-                <i class="bi bi-calendar3"></i> {{ post.published_at|date:"d M Y" }}
-              </time>
-              <span>&bull;</span>
-              <span><i class="bi bi-clock"></i> {{ post.reading_time }} min</span>
-            </div>
-
-            <h2 class="card-title h5 mb-2">
-              <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-body">
-                {{ post.title }}
-              </a>
-            </h2>
-
-            <p class="card-text text-secondary small">
-              {{ post.summary|default:post.content_md|truncatewords:30 }}
-            </p>
-
-            <a href="{{ post.get_absolute_url }}" class="btn btn-sm btn-outline-primary">
-              {% trans "Ler artigo" %} &rarr;
-            </a>
+        <article class="post-card">
+          <div class="post-meta">
+            <time datetime="{{ post.published_at|date:'c' }}">
+              [{{ post.published_at|date:"Y.m.d" }}]
+            </time>
+            <span class="meta-separator">//</span>
+            <span>{{ post.reading_time }} MIN READ</span>
           </div>
+
+          <h2 class="post-title">
+            <a href="{{ post.get_absolute_url }}">
+              {{ post.title }}
+            </a>
+          </h2>
+
+          <p class="post-summary">
+            {{ post.summary|default:post.content_md|truncatewords:30 }}
+          </p>
+
+          <a href="{{ post.get_absolute_url }}" class="read-link">
+            <span>{% trans "Ler artigo" %}</span>
+            <span class="arrow">&rarr;</span>
+          </a>
         </article>
       {% endfor %}
 
       {% if is_paginated %}
-        <nav aria-label="{% trans 'Navegação de páginas' %}" class="mt-4">
-          <ul class="pagination justify-content-center">
+        <nav aria-label="{% trans 'Navegação de páginas' %}">
+          <ul class="pagination-terminal">
             {% if page_obj.has_previous %}
-              <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+              <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">&lt; prev</a></li>
             {% endif %}
             {% for num in paginator.page_range %}
               <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                <a class="page-link" href="?q={{ query }}&page={{ num }}">[{{ num }}]</a>
               </li>
             {% endfor %}
             {% if page_obj.has_next %}
-              <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">&raquo;</a></li>
+              <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">next &gt;</a></li>
             {% endif %}
           </ul>
         </nav>
@@ -78,8 +78,8 @@
 
     {% else %}
       {% if query %}
-        <div class="alert alert-warning" role="alert">
-          {% trans "Nenhum artigo encontrado correspondente à sua busca." %}
+        <div class="alert-terminal alert-warning" role="alert">
+          // {% trans "Nenhum artigo encontrado correspondente à consulta." %}
         </div>
       {% endif %}
     {% endif %}
