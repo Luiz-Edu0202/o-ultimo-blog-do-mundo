@@ -305,7 +305,8 @@ Deve conter:
 3. **Dashboard**: login, 2FA, rate limit, CRUD de posts/tags/mídia/SiteConfig, preview.
 4. **Docker**: Dockerfile multi-stage, compose com Postgres e Redis, healthcheck, testes em container.
 5. **Produção**: Supabase (DB + Storage), Upstash, Render, pipeline completa, Dependabot, keep-alive.
-6. **Polimento**: acessibilidade, testes finais, README, screenshots, revisão de segurança.
+6. **Identidade visual & Mobile**: tipografia, paleta de cores, tema claro/escuro refinado, front-end responsivo para celulares e dispositivos móveis.
+7. **Polimento**: acessibilidade (WCAG AA), testes finais, README, screenshots, revisão de segurança e release v1.0.0.
 
 ---
 
@@ -350,7 +351,7 @@ Deve conter:
 
 ## 18. Encerramento do projeto
 
-Ao concluir o Milestone 6, o agente deve:
+Ao concluir o Milestone 7, o agente deve:
 
 1. Garantir que o `README.md` está completo conforme a seção 13.
 2. Gerar/atualizar `CHANGELOG.md` com a entrada da versão `v1.0.0`.

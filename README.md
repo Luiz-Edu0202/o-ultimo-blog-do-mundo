@@ -237,8 +237,9 @@ Veja o arquivo [`.env.example`](.env.example) para a lista completa com document
 - [x] **M2 — Domínio público**: modelos, i18n, Markdown, views, SEO
 - [x] **M3 — Dashboard**: login, 2FA, CRUD, preview
 - [x] **M4 — Docker**: Dockerfile multi-stage, compose, healthcheck, CI build
-- [x] **M5 — Produção**: Supabase, Upstash, Render, CI completo *(atual)*
-- [ ] **M6 — Polimento**: acessibilidade, testes finais, screenshots
+- [x] **M5 — Produção**: Supabase, Upstash, Render, CI completo
+- [ ] **M6 — Identidade visual & Mobile**: tipografia, paleta de cores, tema claro/escuro refinado, front-end responsivo para celulares
+- [ ] **M7 — Polimento**: acessibilidade (WCAG AA), testes finais, screenshots, README completo, release v1.0.0
 
 ## 📄 Licença
 
