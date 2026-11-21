@@ -33,6 +33,17 @@
 - **Sem Django admin** — dashboard customizado em URL secreta para demonstrar skills de front-end e segurança.
 - **Sem Kubernetes** — foco em demonstrar Docker + CI/CD + deploy simples; orquestração será projeto separado.
 
+### 🎨 Identidade visual & Design System
+
+O projeto adota uma estética **Cyberpunk Suave / Terminal Retrô-Futurista**, concebida para transmitir o conceito de *"O Último Blog do Mundo"* como uma transmissão técnica e resiliente num futuro hiper-digital:
+
+- **Tipografia**: Space Grotesk (títulos e display), Inter (corpo editorial de alta legibilidade) e JetBrains Mono (código, metadados e elementos CLI), todas servidas localmente em formato WOFF2.
+- **Paleta de Cores**:
+  - **Tema Escuro (Padrão)**: Fundo `#0A0C10`, superfícies `#12151C`, acento ciano fosforescente `#00E5CC`.
+  - **Tema Claro**: Fundo `#F5F6F8`, superfícies `#FFFFFF`, acento `#009E8F` calibrado para alto contraste WCAG AA.
+- **Micro-identidade Terminal**: Logo com cursor piscante `█`, metadados em estilo log `[2026.11.20] // 5 MIN READ`, tags em formato bracketed `[ docker ]`, páginas 404/500 com ASCII art e rodapé simulando prompt de shell Unix (`luiz@terminal:~blog$`).
+- **Mobile-First**: Menu offcanvas terminal dedicado, áreas de toque mínimas de 44px e escala tipográfica responsiva com `clamp()`.
+
 ## 📁 Estrutura do projeto
 
 ```
@@ -238,7 +249,7 @@ Veja o arquivo [`.env.example`](.env.example) para a lista completa com document
 - [x] **M3 — Dashboard**: login, 2FA, CRUD, preview
 - [x] **M4 — Docker**: Dockerfile multi-stage, compose, healthcheck, CI build
 - [x] **M5 — Produção**: Supabase, Upstash, Render, CI completo
-- [ ] **M6 — Identidade visual & Mobile**: tipografia, paleta de cores, tema claro/escuro refinado, front-end responsivo para celulares
+- [x] **M6 — Identidade visual & Mobile**: tipografia, paleta de cores, tema claro/escuro refinado, front-end responsivo para celulares
 - [ ] **M7 — Polimento**: acessibilidade (WCAG AA), testes finais, screenshots, README completo, release v1.0.0
 
 ## 📄 Licença

@@ -5,6 +5,37 @@ Todas as mudanças notáveis do projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [0.6.0] - 2026-11-20
+
+### Adicionado (Milestone 6 — Identidade Visual & Mobile)
+
+- **Identidade Visual: Cyberpunk Suave / Terminal Retrô-Futurista**:
+  - Conceito estético inspirado em publicações editoriais e de tecnologia independente (*Base Design Off Mute*, *Visuelle.co.uk*, *N-O-D-E.net*, *Berkeley Graphics / U.S. Graphics*).
+  - Tipografia de precisão servida localmente (arquivos WOFF2 em `static/fonts/`):
+    - **Space Grotesk** (Medium 500 / Bold 700) para cabeçalhos e títulos editoriais.
+    - **Inter** (Regular 400 / Medium 500 / SemiBold 600) para leitura de texto fluido.
+    - **JetBrains Mono** (Light 300 / Regular 400) para código, metadados, badges de tags e navegação CLI.
+  - Design tokens em CSS custom properties (`static/css/tokens.css`) com suporte refinado a temas:
+    - **Tema Escuro** (padrão): fundo abissal `#0A0C10`, superfícies `#12151C`, acento ciano fosforescente `#00E5CC` com brilho de baixa intensidade.
+    - **Tema Claro**: fundo `#F5F6F8`, superfícies `#FFFFFF`, acento `#009E8F` calibrado para alto contraste WCAG AA.
+  - Arquitetura CSS modular em `static/css/`: `fonts.css`, `tokens.css`, `base.css`, `pygments.css`, `responsive.css` e componentes (`navbar.css`, `cards.css`, `post.css`, `sidebar.css`, `footer.css`, `pages.css`, `dashboard.css`) orquestrados via `custom.css`.
+  - Sintaxe de realce de código (`pygments.css`) atualizada com paleta Monokai-cyberpunk escura e suporte simultâneo ao tema claro.
+- **Micro-identidade Terminal & Redesign dos Templates**:
+  - `templates/base.html`: header com logo prompt, cursor piscante `█`, links de navegação com prefixo `>`, seletor de idiomas `lang-selector`, alternador de tema sincronizado e footer com linha de comando interativa (`luiz@terminal:~blog$`).
+  - `templates/blog/post_list.html`: cards com formato de arquivo de log, metadados bracketed (`[2026.11.20] // 5 MIN READ`), badges de tags em formato `[ tag ]`, link de leitura fluido e paginação terminal `[1] [2]`.
+  - `templates/blog/post_detail.html`: tipografia editorial, aviso de tradução estilizado com borda accent, bloco de código com borda terminal e navegação de retorno.
+  - `templates/blog/post_search.html` e `templates/blog/tag_post_list.html`: formulário de busca terminal e listagem com contagem de transmissões.
+  - `templates/core/about.html`: painel com manifesto do autor e botões de canais sociais em monospace.
+  - `templates/404.html` e `templates/500.html`: páginas de erro estilizadas com ASCII art retrô-futurista e códigos de erro temáticos (`// ERR_SIGNAL_LOST`, `// ERR_CORE_FAULT`).
+  - `templates/dashboard/base_dashboard.html` e `templates/dashboard/login.html`: dashboard administrativo e tela de autenticação alinhados ao visual de terminal seguro.
+- **Responsividade Mobile-First**:
+  - Menu offcanvas terminal dedicado para dispositivos móveis (`#navbarOffcanvas`) com alvos de toque acessíveis (≥ 44px).
+  - Escala tipográfica fluida com `clamp()` para títulos e parágrafos sem quebra de layout em telas pequenas.
+  - Transições suaves e tabelas/blocos de código com `overflow-x: auto` e scrolling touch otimizado.
+- **Qualidade e Testes**:
+  - 10 novos testes automatizados em `tests/test_visual_identity.py` cobrindo presença e integridade das fontes locais, estrutura de tokens CSS, renderização de elementos da navbar, offcanvas, cards, detalhe de post, busca, página sobre, páginas de erro e dashboard.
+  - Total de 99 testes passando com 92.33% de cobertura.
+
 ## [0.5.0] - 2026-11-20
 
 ### Adicionado (Milestone 5 — Produção)
