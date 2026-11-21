@@ -3,7 +3,7 @@
 
 # Testing
 pytest~=8.3
-pytest-django~=4.9
+pytest-django~=4.14
 pytest-cov~=6.0
 
 # Code quality
