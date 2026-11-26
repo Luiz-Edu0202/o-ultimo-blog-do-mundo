@@ -9,7 +9,7 @@ nh3~=0.2
 
 # Front-end forms & helpers
 django-crispy-forms~=2.3
-crispy-bootstrap5~=2024.10
+crispy-bootstrap5~=2026.9
 django-bootstrap5~=24.3
 
 # Security, 2FA & Rate limiting (Milestone 3)
