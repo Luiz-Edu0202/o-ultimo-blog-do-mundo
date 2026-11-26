@@ -11,7 +11,7 @@ whitenoise~=6.12
 psycopg[binary]~=3.3
 
 # Cache & Sessions (Upstash Redis)
-redis~=5.2
+redis~=8.1
 
 # Supabase Storage (S3-compatible)
 django-storages[s3]~=1.14
